@@ -18,6 +18,5 @@ public class BeamForm {
 		BeamObject b = new BeamObject(filePath, 1030000000, 262144, 2*Math.pow(10, 6));
 		BeamObject[] array = new BeamObject[8];
 		array[0] = b;
-		Chart2D graph = b.graph(b.fr, b.absZf, b.absZf.length);
 	}
 }

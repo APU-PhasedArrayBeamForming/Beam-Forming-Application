@@ -7,7 +7,7 @@ import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
-public class BeamObject {
+public class BeamObject{
 	
 	public String filePath;
 	
@@ -37,6 +37,14 @@ public class BeamObject {
 	public Complex[] Z;
 	public Complex[] Zf;
 	double[] absZf;
+	
+	//Default Constructor
+	public BeamObject(){
+		filePath = null;
+		frequency = 0;
+		n = 0;
+		sample = 0;
+	}
 	
 	
 	/**
@@ -173,7 +181,7 @@ public class BeamObject {
 	
 	//Methods
 	
-	public Chart2D graph(double[] x, double[] y, double m){
+	public Chart2D graphFiltered(){
 		// Create a chart:  
 				Chart2D chart = new Chart2D();
 
@@ -184,36 +192,32 @@ public class BeamObject {
 				chart.addTrace(trace);    
 
 				// Add all points, as it is static: 
+				for (int i = 0; i < n; i++)					// Filtered version
+					trace.addPoint(fr[i], absZf[i]);
+				
+				System.out.println("Chart created!");
+				
+				return chart;	
+	}
+	
+	public Chart2D graphUnfiltered(){
+		// Create a chart:  
+				Chart2D chart = new Chart2D();
 
-//				for (int i = 0; i < m; i++)					// Unfiltered version
-//					trace.addPoint(fr[i], absfE[i]);
-				
-				for (int i = 0; i < m; i++)					// Filtered version
-					trace.addPoint(x[i], y[i]);
+				// Create an ITrace: 
+				ITrace2D trace = new Trace2DSimple(); 
 
-//
-//				// Make it visible: Create a frame.
-//				JFrame frame = new JFrame("MinimalStaticChart");
-//
-//				// add the chart to the frame: 
-//				frame.getContentPane().add(chart);
-//				frame.setSize(600,400);
-//				frame.setTitle("I&Q Data");
-//
-//				// Enable the termination button [cross on the upper right edge]: 
-//				frame.addWindowListener(
-//						new WindowAdapter()
-//						{
-//							public void windowClosing(WindowEvent e)
-//							{
-//								System.exit(0);
-//							}
-//						}
-//						);
-//				frame.setVisible(true);
+				// Add the trace to the chart. This has to be done before adding points (deadlock prevention): 
+				chart.addTrace(trace);    
+
+				// Add all points, as it is static: 
+				for(int i = 0; i < n; i++){
+					trace.addPoint(fr[i], absfE[i]);
+				}
 				
-				return chart;
+				System.out.println("Chart created!");
 				
+				return chart;	
 	}
 	
 	public void filter(){
