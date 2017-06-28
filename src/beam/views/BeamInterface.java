@@ -228,18 +228,21 @@ public class BeamInterface extends JFrame {
 				pnlUnfilteredGraph.add(graph2, BorderLayout.CENTER);
 			}
 		});
-//		BeamObject b = new BeamObject("/Users/sarahdepillis/Documents/Array-Based-Beam-Forming/Recordings/Fc100KHz_2MSPS_1KHzModulation_June12_2017.wav", 
+//		BeamObject b = new BeamObject("/Users/Justin/Desktop/Array-Based-Beam-Forming/Scripts/Fc100KHz_2MSPS_1KHzModulation_June12_2017.wav", 
 //				1030000000, 262144, 2*Math.pow(10, 6));
+		
+		BeamObject b = new BeamObject("/Users/Justin/Documents/Visual Studio 2015/Projects/ConsoleApplication1/ConsoleApplication1/bin/Debug/outputfile.wav", 
+				1030000000, 262144, 2*Math.pow(10, 6));
 
-//		Chart2D graph = b.graphFiltered();
-//		Chart2D graph2 = b.graphUnfiltered();
-//
-		//		pnlFilteredGraph.add(graph, BorderLayout.CENTER);
-		//		pnlUnfilteredGraph.add(graph2, BorderLayout.CENTER);
+		Chart2D graph = b.graphFiltered();
+		Chart2D graph2 = b.graphUnfiltered();
+
+				pnlFilteredGraph.add(graph, BorderLayout.CENTER);
+				pnlUnfilteredGraph.add(graph2, BorderLayout.CENTER);
 
 
 
-		//In response to a button click:
-		//int returnVal = fc.showOpenDialog(aComponent);
+//		In response to a button click:
+//		int returnVal = fc.showOpenDialog(aComponent);
 	}
 }
