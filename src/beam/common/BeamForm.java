@@ -12,7 +12,7 @@ import info.monitorenter.gui.chart.Chart2D;
 
 public class BeamForm {
 	
-	public static String filePath = "/Users/barthinator/Desktop/Fc100KHz_2MSPS_1KHzModulation_June12_2017.wav";
+	public static String filePath = "/Users/Justin/Desktop/Array-Based-Beam-Forming/Scripts/Fc100KHz_2MSPS_1KHzModulation_June12_2017.wav";
 	
 	public static void main(String args[]){
 		BeamObject b = new BeamObject(filePath, 1030000000, 262144, 2*Math.pow(10, 6));
