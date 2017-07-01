@@ -176,6 +176,8 @@ public class BeamObject {
 
 		// Convolution
 		Z = FFT.cconvolve(hComplex, E);
+		
+		//do weightings here.
 
 		//Fast fourier transform
 		Zf = FFT.fft(Z);

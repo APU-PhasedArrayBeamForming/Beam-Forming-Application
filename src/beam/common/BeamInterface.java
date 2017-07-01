@@ -210,7 +210,7 @@ public class BeamInterface extends JFrame {
 
 				Chart2D graph = b.graphFiltered();
 				Chart2D graph2 = b.graphUnfiltered();
-
+				
 			}
 		});
 		
