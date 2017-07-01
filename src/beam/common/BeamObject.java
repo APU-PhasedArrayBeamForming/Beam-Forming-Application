@@ -29,6 +29,8 @@ public class BeamObject {
 
 	private double I[];
 	private double Q[];
+	public double ICut[];
+	public double QCut[];
 	public Complex E[];
 	public Complex fE[];
 	public double fr[];
@@ -91,7 +93,43 @@ public class BeamObject {
 
 
 	//Methods
-
+	
+	//method to chop of ends of recordings to match each other.
+	//need to know pattern (i pretended pulse was 10 "99"s right after each other.
+	//need to add Q also.
+//	public void alignRecordings()
+//	{
+//		//rewrite array to chop off at first part.
+//		int j=0;
+//		int locationEnd=0;
+//		int locationStart=0;
+//		for (int i=0;i<I.length;i++)
+//		{
+//			if (I[i]==99)
+//			{
+//				j++;
+//				if ((j==10)&&(locationEnd==0))
+//				{
+//					locationEnd=i+1;
+//					j=0;
+//				}
+//				if ((j==10)&&(locationEnd!=0))
+//				{
+//					locationStart=locationEnd;
+//					locationEnd=i-10;
+//					j=0;
+//					for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++)
+//					{
+//						//ICut size: double ICut= new double[I.length-locationStart-locationEnd];
+//						ICut[j]=I[i2];
+//						j++;
+//					}
+//				}
+//			}
+//		}
+//	}
+	
+	
 	public Chart2D graphUnfiltered()
 	{
 		// Create a chart:  
