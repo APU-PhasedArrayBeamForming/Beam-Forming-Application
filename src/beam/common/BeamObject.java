@@ -108,20 +108,21 @@ public class BeamObject {
 //			if (I[i]==99)
 //			{
 //				j++;
-//				if ((j==10)&&(locationEnd==0))
+//				if ((j==10)&&(locationEnd==0))   //if beginning of our snippet, get i value 
 //				{
 //					locationEnd=i+1;
 //					j=0;
 //				}
-//				if ((j==10)&&(locationEnd!=0))
+//				if ((j==10)&&(locationEnd!=0))   //if end of our snippet, get i value
 //				{
 //					locationStart=locationEnd;
 //					locationEnd=i-10;
 //					j=0;
-//					for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++)
+//					for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++) //put snippet into new array.
 //					{
 //						//ICut size: double ICut= new double[I.length-locationStart-locationEnd];
 //						ICut[j]=I[i2];
+//						QCut[j]=Q[i2];
 //						j++;
 //					}
 //				}
