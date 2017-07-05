@@ -21,7 +21,7 @@ public class BeamForm {
 	public static void main(String args[]) throws IOException, WavFileException{
 //		BeamObject b1 = new BeamObject(filePath1, 1030000000, 262144);
 		//BeamObject b1 = new BeamObject(filePath1, 104300000, 262144, 2048000);
-		BeamObject b2 = new BeamObject(filePath2, 104300000, 262144);
+		BeamObject b2 = new BeamObject(filePath2, 104300000, 262144, null);
 //		BeamObject[] array = new BeamObject[8];
 //		array[0] = b1;
 //		array[1] = b2;

@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JFrame;
@@ -29,8 +30,6 @@ public class BeamObject {
 
 	private double I[];
 	private double Q[];
-	public double ICut[];
-	public double QCut[];
 	public Complex E[];
 	public Complex fE[];
 	public double fr[];
@@ -49,6 +48,14 @@ public class BeamObject {
 	public Complex[] Zf;
 	double[] absZf;
 
+	//Filtered with Weightings
+	public Complex[] zTimesWeightings;
+	private Complex weighting;
+	double[] absAddedWeightings;
+	public double angle;
+	ArrayList<Double> addedWeightingsAmp = new ArrayList<>();
+
+
 
 	/**
 	 * Constructor
@@ -63,9 +70,11 @@ public class BeamObject {
 		filePath = null;
 		frequency = 0;
 		n = 0;
+		weighting = new Complex(0,0);
 	}
 
-	public BeamObject(String filePath, double frequency, double n) {
+	public BeamObject(String filePath, double frequency, double n, Complex weighting) 
+	{
 
 		//can implement buffered version
 		//double [][] IQdata = readFileWithBufferSize((n), filePath);
@@ -74,60 +83,37 @@ public class BeamObject {
 
 		I = Arrays.copyOf(IQdata[0], (int) n);
 		Q = Arrays.copyOf(IQdata[1], (int) n);
+	
+		this.n = I.length;
+		if (this.n < n)
+		{
+			p = Math.floor(Math.log(this.n) / Math.log(2));
+			this.n = Math.pow(2, p);
+			System.out.println("Used 'n' from data.");
+		}
+		else
+		{
+			this.n = n;
+		}
 
+		this.setWeighting(weighting);
 		this.filePath = filePath;
-		this.frequency = frequency;
+		this.frequency = frequency*1000000; 		// Convert Frequency into kHz
 		this.n = n;
 		omega = 2*Math.PI*frequency;
-		p = Math.floor(Math.log(n) / Math.log(2));
 		dt = 1/sample;
 
 		makeE();
 		fourierTransform();
-		filter();
+		filterAndWeightings(weighting);
+		//filter();
 	}
 
 
 
 
 	//Methods
-	
-	//method to chop of ends of recordings to match each other.
-	//need to know pattern (i pretended pulse was 10 "99"s right after each other.
-//	public void alignRecordings()
-//	{
-//		//rewrite array to chop off at first part.
-//		int j=0;
-//		int locationEnd=0;
-//		int locationStart=0;
-//		for (int i=0;i<I.length;i++)
-//		{
-//			if (I[i]==99)
-//			{
-//				j++;
-//				if ((j==10)&&(locationEnd==0))   //if beginning of our snippet, get i value 
-//				{
-//					locationEnd=i+1;
-//					j=0;
-//				}
-//				if ((j==10)&&(locationEnd!=0))   //if end of our snippet, get i value
-//				{
-//					locationStart=locationEnd;
-//					locationEnd=i-10;
-//					j=0;
-//					for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++) //put snippet into new array.
-//					{
-//						//ICut size: double ICut= new double[I.length-locationStart-locationEnd];
-//						ICut[j]=I[i2];
-//						QCut[j]=Q[i2];
-//						j++;
-//					}
-//				}
-//			}
-//		}
-//	}
-	
-	
+
 	public Chart2D graphUnfiltered()
 	{
 		// Create a chart:  
@@ -193,6 +179,114 @@ public class BeamObject {
 
 	}
 
+	public Complex calcWeighting(double freq, double distance, double angle, double numReceiver)
+	{
+		double e = 2.718281828459;			// Euler's number
+		double c = 299792458;				// Speed of light (m/s)
+		double pi = 3.14159265358979;		// Pi
+		this.angle = angle;
+		distance = distance*0.0254;			// Convert distance to meters
+		distance = distance*numReceiver;
+		
+		
+		double k = (2*pi*freq)/c;
+		
+		double power = k*distance*Math.sin(angle);
+		
+		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
+		
+		return weighting;
+	}
+
+	public void filterAndWeightings(Complex weighting)
+	{	
+		// Create complex version of h
+		hComplex = new Complex[E.length];
+
+		//Populates everything with zeroes
+		for (int i = 0; i < E.length; i++)
+		{
+			hComplex[i] = new Complex(0,0);
+		}
+
+		//Adding the values from H into hComplex
+		for (int i = 0; i < h.length; i++)
+		{
+			hComplex[i] = new Complex(h[i], 0);
+		}
+
+		// Convolution
+		Z = FFT.cconvolve(hComplex, E);
+
+		// Multiply by weighting
+		zTimesWeightings = new Complex[Z.length];
+		for (int i = 0; i < Z.length; i++) 
+		{
+			zTimesWeightings[i] = Z[i].times(weighting);
+		}
+
+
+		// For plotting
+		//				absZf = absComplex(Zf);
+	}
+
+	public void addWeightings(Complex[] b1, Complex[] b2, Complex[] b3, Complex[] b4, Complex[] b5, Complex[] b6, Complex[] b7, Complex[] b8)
+	{
+		Complex[] addedWeightings = new Complex[zTimesWeightings.length];
+		for (int i = 0; i < zTimesWeightings.length; i++)
+		{
+			addedWeightings[i] = b1[i].plus(b2[i]).plus(b3[i]).plus(b4[i]).plus(b5[i]).plus(b6[i]).plus(b7[i]).plus(b8[i]);
+		}
+		
+		absAddedWeightings = absComplex(addedWeightings);
+		
+		double max = -100000;
+		for(int i = 0; i < addedWeightings.length; i++)
+		{
+			if (absAddedWeightings[i] > max)
+				max = absAddedWeightings[i];
+		}
+		
+		this.addedWeightingsAmp.add(max);
+		
+//		return absAddedWeightings;
+
+	}
+	
+	
+	public Chart2D finalGraph()
+	{
+		// Create a chart:  
+		Chart2D chart = new Chart2D();
+
+		// Create an ITrace: 
+		ITrace2D trace = new Trace2DSimple(); 
+		trace.setName("");
+
+		// Add the trace to the chart. This has to be done before adding points (deadlock prevention): 
+		chart.addTrace(trace);    
+
+		// Add all points, as it is static: 
+
+
+		for (int i = 0; i < n; i++)	
+			trace.addPoint(angle, addedWeightingsAmp.get(i));
+
+		// Make it visible: Create a frame.
+		JFrame frame = new JFrame("MinimalStaticChart");
+
+		// add the chart to the frame: 
+		frame.getContentPane().add(chart);
+		frame.setSize(600,400);
+		frame.setTitle("");
+		frame.setLocation(850, 0);
+
+		frame.setVisible(true);
+
+
+		return chart;
+	}
+
 	public void filter()
 	{
 		// Create complex version of h
@@ -212,8 +306,6 @@ public class BeamObject {
 
 		// Convolution
 		Z = FFT.cconvolve(hComplex, E);
-		
-		//do weightings here.
 
 		//Fast fourier transform
 		Zf = FFT.fft(Z);
@@ -350,7 +442,8 @@ public class BeamObject {
 				framesRead = wavFile.readFrames(buffer, (int) wavFile.getNumFrames());
 			}
 			while (framesRead != 0);
-			sample=wavFile.getSampleRate();
+
+			sample = wavFile.getSampleRate();
 			wavFile.close();
 
 			return buffer;
@@ -383,7 +476,7 @@ public class BeamObject {
 	public String getFilePath() {return filePath;}
 	public double getFrequency() {return frequency;}
 	public double getN() {return n;}
-	public double getSample() {return sample;}
+	public Complex getWeighting() {return weighting;}
 
 	public void setI(double[] array) {I = Arrays.copyOf(array, array.length);}
 	public void setQ(double[] array) {Q = Arrays.copyOf(array, array.length);}
@@ -391,6 +484,6 @@ public class BeamObject {
 	public void setFilePath(String filePath) {this.filePath = filePath;}
 	public void setFrequency(double frequency) {this.frequency = frequency;}
 	public void setN(double n) {this.n = n;}
-	public void setSample(double sample) {this.sample = sample;}
+	public void setWeighting(Complex weighting2) {this.weighting = weighting2;}
 
 }
