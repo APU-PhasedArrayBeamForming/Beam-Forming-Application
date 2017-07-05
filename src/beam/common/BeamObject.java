@@ -114,6 +114,42 @@ public class BeamObject {
 
 	//Methods
 
+
+	//method to chop of ends of recordings to match each other.
+	//need to know pattern (i pretended pulse was 10 "99"s right after each other.
+//	public void alignRecordings()
+//	{
+//		//rewrite array to chop off at first part.
+//		int j=0;
+//		int locationEnd=0;
+//		int locationStart=0;
+//		for (int i=0;i<I.length;i++)
+//		{
+//			if (I[i]==99)
+//			{
+//				j++;
+//				if ((j==10)&&(locationEnd==0))   //if beginning of our snippet, get i value 
+//				{
+//					locationEnd=i+1;
+//					j=0;
+//				}
+//				if ((j==10)&&(locationEnd!=0))   //if end of our snippet, get i value
+//				{
+//					locationStart=locationEnd;
+//					locationEnd=i-10;
+//					j=0;
+//					for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++) //put snippet into new array.
+//					{
+//						//ICut size: double ICut= new double[I.length-locationStart-locationEnd];
+//						ICut[j]=I[i2];
+//						QCut[j]=Q[i2];
+//						j++;
+//					}
+//				}
+//			}
+//		}
+//	}
+	
 	public Chart2D graphUnfiltered()
 	{
 		// Create a chart:  
