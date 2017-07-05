@@ -94,7 +94,6 @@ public class BeamObject {
 	
 	//method to chop of ends of recordings to match each other.
 	//need to know pattern (i pretended pulse was 10 "99"s right after each other.
-	//need to add Q also.
 //	public void alignRecordings()
 //	{
 //		//rewrite array to chop off at first part.
