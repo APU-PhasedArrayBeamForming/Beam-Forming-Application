@@ -63,10 +63,9 @@ public class BeamObject {
 		filePath = null;
 		frequency = 0;
 		n = 0;
-		sample = 0;;
 	}
 
-	public BeamObject(String filePath, double frequency, double n, double sample) {
+	public BeamObject(String filePath, double frequency, double n) {
 
 		//can implement buffered version
 		//double [][] IQdata = readFileWithBufferSize((n), filePath);
@@ -79,7 +78,6 @@ public class BeamObject {
 		this.filePath = filePath;
 		this.frequency = frequency;
 		this.n = n;
-		this.sample = sample;
 		omega = 2*Math.PI*frequency;
 		p = Math.floor(Math.log(n) / Math.log(2));
 		dt = 1/sample;
@@ -353,7 +351,7 @@ public class BeamObject {
 				framesRead = wavFile.readFrames(buffer, (int) wavFile.getNumFrames());
 			}
 			while (framesRead != 0);
-
+			sample=wavFile.getSampleRate();
 			wavFile.close();
 
 			return buffer;

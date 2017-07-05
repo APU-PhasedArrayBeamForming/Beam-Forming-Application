@@ -38,15 +38,13 @@ import javax.swing.JList;
 import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 
-public class BeamInterface extends JFrame {
+public class BeamInterface1 extends JFrame {
 
 	private JPanel contentPane;
 	private JButton btnSelectFile;
 	private JTextField tfFilePath;
 	private JLabel lblFrequency;
 	private JTextField tfFreq;
-	private JTextField tfSampleRate;
-	private JLabel lblSampleRate;
 	private JLabel lblNumberOfIterations;
 	private JTextField tfN;
 	private JComboBox comboBox;
@@ -59,7 +57,7 @@ public class BeamInterface extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					BeamInterface frame = new BeamInterface();
+					BeamInterface1 frame = new BeamInterface1();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -71,7 +69,7 @@ public class BeamInterface extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public BeamInterface() {
+	public BeamInterface1() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
@@ -109,11 +107,6 @@ public class BeamInterface extends JFrame {
 		tfFreq = new JTextField();
 		tfFreq.setColumns(10);
 		
-		lblSampleRate = new JLabel("Sample Rate:");
-		
-		tfSampleRate = new JTextField();
-		tfSampleRate.setColumns(10);
-		
 		lblNumberOfIterations = new JLabel("Number of Iterations:");
 		
 		tfN = new JTextField();
@@ -131,8 +124,8 @@ public class BeamInterface extends JFrame {
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
-			gl_contentPane.createParallelGroup(Alignment.TRAILING)
-				.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+			gl_contentPane.createParallelGroup(Alignment.LEADING)
+				.addGroup(gl_contentPane.createSequentialGroup()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnSelectFile)
@@ -145,11 +138,6 @@ public class BeamInterface extends JFrame {
 							.addComponent(tfFreq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addContainerGap()
-							.addComponent(lblSampleRate)
-							.addPreferredGap(ComponentPlacement.RELATED)
-							.addComponent(tfSampleRate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addContainerGap()
 							.addComponent(lblNumberOfIterations)
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(tfN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -159,7 +147,7 @@ public class BeamInterface extends JFrame {
 							.addPreferredGap(ComponentPlacement.RELATED)
 							.addComponent(comboBox, GroupLayout.PREFERRED_SIZE, 153, GroupLayout.PREFERRED_SIZE))
 						.addComponent(btnRun))
-					.addContainerGap(67, Short.MAX_VALUE))
+					.addContainerGap(64, Short.MAX_VALUE))
 		);
 		gl_contentPane.setVerticalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
@@ -172,11 +160,7 @@ public class BeamInterface extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblFrequency)
 						.addComponent(tfFreq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(lblSampleRate)
-						.addComponent(tfSampleRate, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
+					.addGap(36)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblNumberOfIterations)
 						.addComponent(tfN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
@@ -201,7 +185,7 @@ public class BeamInterface extends JFrame {
 				
 				b.setFilePath(tfFilePath.getText());
 				b.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b.setSample(Double.parseDouble(tfSampleRate.getText()));
+				
 				b.setN(Integer.parseInt(tfN.getText()));;
 				
 				
