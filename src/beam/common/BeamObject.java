@@ -4,8 +4,14 @@ import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Scanner;
 
 import javax.swing.JFrame;
 
@@ -54,7 +60,8 @@ public class BeamObject {
 	double[] absAddedWeightings;
 	public double angle;
 	ArrayList<Double> addedWeightingsAmp = new ArrayList<>();
-
+	ArrayList<Double> signalAngle = new ArrayList<>();
+	ArrayList<Double> signalPower = new ArrayList<>();
 
 
 	/**
@@ -83,7 +90,7 @@ public class BeamObject {
 
 		I = Arrays.copyOf(IQdata[0], (int) n);
 		Q = Arrays.copyOf(IQdata[1], (int) n);
-	
+
 		this.n = I.length;
 		if (this.n < n)
 		{
@@ -114,42 +121,6 @@ public class BeamObject {
 
 	//Methods
 
-
-	//method to chop of ends of recordings to match each other.
-	//need to know pattern (i pretended pulse was 10 "99"s right after each other.
-//	public void alignRecordings()
-//	{
-//		//rewrite array to chop off at first part.
-//		int j=0;
-//		int locationEnd=0;
-//		int locationStart=0;
-//		for (int i=0;i<I.length;i++)
-//		{
-//			if (I[i]==99)
-//			{
-//				j++;
-//				if ((j==10)&&(locationEnd==0))   //if beginning of our snippet, get i value 
-//				{
-//					locationEnd=i+1;
-//					j=0;
-//				}
-//				if ((j==10)&&(locationEnd!=0))   //if end of our snippet, get i value
-//				{
-//					locationStart=locationEnd;
-//					locationEnd=i-10;
-//					j=0;
-//					for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++) //put snippet into new array.
-//					{
-//						//ICut size: double ICut= new double[I.length-locationStart-locationEnd];
-//						ICut[j]=I[i2];
-//						QCut[j]=Q[i2];
-//						j++;
-//					}
-//				}
-//			}
-//		}
-//	}
-	
 	public Chart2D graphUnfiltered()
 	{
 		// Create a chart:  
@@ -223,14 +194,14 @@ public class BeamObject {
 		this.angle = angle;
 		distance = distance*0.0254;			// Convert distance to meters
 		distance = distance*numReceiver;
-		
-		
+
+
 		double k = (2*pi*freq)/c;
-		
+
 		double power = k*distance*Math.sin(angle);
-		
+
 		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
-		
+
 		return weighting;
 	}
 
@@ -273,25 +244,132 @@ public class BeamObject {
 		{
 			addedWeightings[i] = b1[i].plus(b2[i]).plus(b3[i]).plus(b4[i]).plus(b5[i]).plus(b6[i]).plus(b7[i]).plus(b8[i]);
 		}
-		
+
 		absAddedWeightings = absComplex(addedWeightings);
-		
+
 		double max = -100000;
 		for(int i = 0; i < addedWeightings.length; i++)
 		{
 			if (absAddedWeightings[i] > max)
 				max = absAddedWeightings[i];
 		}
-		
-		this.addedWeightingsAmp.add(max);
-		
-//		return absAddedWeightings;
 
+		//this.addedWeightingsAmp.add(max);
+
+
+		// Add plot points to an ArrayList
+		ArrayList<AngleVsPower> plotPoints = new ArrayList<AngleVsPower>();
+
+		// Make a NEW instance of a plot point
+		plotPoints.add(new AngleVsPower(angle, max));
+
+
+		// Write plot points to file
+		String fileName = "PlotPoints.txt";
+		writePlotPointsToFile(plotPoints, fileName);
+
+
+		//		return absAddedWeightings;
+
+	}
+
+	private static void writePlotPointsToFile(ArrayList<AngleVsPower> plotPoints, String fileName)
+	{
+		// Create connection to fileName for printing
+		FileOutputStream fos = null;
+		PrintWriter pw = null;
+		try
+		{
+			fos = new FileOutputStream(fileName, true);
+			pw = new PrintWriter(fos);
+
+			// Write points contents out to file
+			for (AngleVsPower pp : plotPoints)
+			{
+				pw.print(pp.getSignalAngle() + ", ");
+				pw.print(pp.getSignalPower() + "\n");
+			}
+
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println("ERROR (File not found): " + e.getMessage());
+		}
+		catch(IOException e)
+		{
+			System.out.println("ERROR (File not found): " + e.getMessage());
+		}
+		finally
+		{
+
+			try 
+			{
+				fos.close();
+				pw.close();
+			}
+			catch(Exception e) { System.out.println("ERROR: " + e.getMessage());}
+		}
 	}
 	
 	
+	private ArrayList<AngleVsPower> readPlotPointsFromFile(String fileName)
+	{
+		// Create connection to fileName for reading
+		FileInputStream fis = null;
+		Scanner fScan = null;
+		ArrayList<AngleVsPower> plotPoints = new ArrayList<AngleVsPower>();
+
+		try
+		{
+			fis = new FileInputStream(fileName);
+			fScan = new Scanner(fis);
+
+			// Read in each plot point line
+			while(fScan.hasNextLine())
+			{
+				// Create a scanner to scan the line
+				String line = fScan.nextLine();			
+				Scanner lineScan = new Scanner(line);	
+				lineScan.useDelimiter(",");
+
+				// Create new plot point and populate
+				AngleVsPower pp = new AngleVsPower();
+				pp.setSignalAngle(Double.parseDouble(lineScan.next().trim()));
+				signalAngle.add(pp.getSignalAngle());
+				pp.setSignalPower(Double.parseDouble(lineScan.next().trim()));
+				signalPower.add(pp.getSignalPower());
+				plotPoints.add(pp);
+				// Debugging
+				//System.out.println(b.toString());
+
+			}
+		}
+		catch(FileNotFoundException e)
+		{
+			System.out.println("ERROR (File not found): " + e.getMessage());
+		}
+		catch(IOException e)
+		{
+			System.out.println("ERROR (File not found): " + e.getMessage());
+		}
+		finally
+		{
+			try 
+			{
+				fis.close();
+				fScan.close();
+			}
+			catch(Exception e) { System.out.println("ERROR: " + e.getMessage());}
+		}
+
+		return plotPoints;
+	}
+
+
 	public Chart2D finalGraph()
 	{
+		ArrayList<AngleVsPower> plotPointsFromFile = readPlotPointsFromFile("PlotPoints.txt");
+		
 		// Create a chart:  
 		Chart2D chart = new Chart2D();
 
@@ -302,11 +380,11 @@ public class BeamObject {
 		// Add the trace to the chart. This has to be done before adding points (deadlock prevention): 
 		chart.addTrace(trace);    
 
-		// Add all points, as it is static: 
+		// Add all points, as it is static:
 
 
 		for (int i = 0; i < n; i++)	
-			trace.addPoint(angle, addedWeightingsAmp.get(i));
+			trace.addPoint(signalAngle.get(i), signalPower.get(i));
 
 		// Make it visible: Create a frame.
 		JFrame frame = new JFrame("MinimalStaticChart");
