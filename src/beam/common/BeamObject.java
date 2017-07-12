@@ -3,11 +3,14 @@ package beam.common;
 import java.awt.Color;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -59,9 +62,11 @@ public class BeamObject {
 	private Complex weighting;
 	double[] absAddedWeightings;
 	public double angle;
-	ArrayList<Double> addedWeightingsAmp = new ArrayList<>();
-	ArrayList<Double> signalAngle = new ArrayList<>();
-	ArrayList<Double> signalPower = new ArrayList<>();
+	//ArrayList<Double> addedWeightingsAmp = new ArrayList<>();
+	private ArrayList<Double> signalAngle;
+	private ArrayList<Double> signalPower;
+	public ArrayList<AngleVsPower> plotPoints;
+
 
 
 	/**
@@ -114,6 +119,8 @@ public class BeamObject {
 		fourierTransform();
 		filterAndWeightings(weighting);
 		//filter();
+		
+	
 	}
 
 
@@ -276,19 +283,28 @@ public class BeamObject {
 	private static void writePlotPointsToFile(ArrayList<AngleVsPower> plotPoints, String fileName)
 	{
 		// Create connection to fileName for printing
+		File f = null;
 		FileOutputStream fos = null;
 		PrintWriter pw = null;
 		try
 		{
-			fos = new FileOutputStream(fileName, true);
+			f = new File(fileName);
+			
+			fos = new FileOutputStream(f, true);
 			pw = new PrintWriter(fos);
+			
 
 			// Write points contents out to file
 			for (AngleVsPower pp : plotPoints)
 			{
-				pw.print(pp.getSignalAngle() + ", ");
-				pw.print(pp.getSignalPower() + "\n");
+				pw.write(pp.getSignalAngle() + ", ");
+				pw.write(pp.getSignalPower() + "");
+				pw.println("");
+				
+				System.out.println(pp.getSignalAngle() + ", " + pp.getSignalPower());
 			}
+			
+			System.out.println("Successfully Written");
 
 		}
 		catch(FileNotFoundException e)
@@ -304,7 +320,7 @@ public class BeamObject {
 
 			try 
 			{
-				fos.close();
+				//f.close();
 				pw.close();
 			}
 			catch(Exception e) { System.out.println("ERROR: " + e.getMessage());}
@@ -328,19 +344,20 @@ public class BeamObject {
 			while(fScan.hasNextLine())
 			{
 				// Create a scanner to scan the line
-				String line = fScan.nextLine();			
+				String line = fScan.nextLine();	
+				AngleVsPower pp = new AngleVsPower();
 				Scanner lineScan = new Scanner(line);	
 				lineScan.useDelimiter(",");
 
 				// Create new plot point and populate
-				AngleVsPower pp = new AngleVsPower();
+				//AngleVsPower pp = new AngleVsPower();
 				pp.setSignalAngle(Double.parseDouble(lineScan.next().trim()));
 				signalAngle.add(pp.getSignalAngle());
 				pp.setSignalPower(Double.parseDouble(lineScan.next().trim()));
 				signalPower.add(pp.getSignalPower());
 				plotPoints.add(pp);
 				// Debugging
-				//System.out.println(b.toString());
+				System.out.println(pp.toString());
 
 			}
 		}
@@ -383,7 +400,7 @@ public class BeamObject {
 		// Add all points, as it is static:
 
 
-		for (int i = 0; i < n; i++)	
+		for (int i = 0; i < signalAngle.size(); i++)	
 			trace.addPoint(signalAngle.get(i), signalPower.get(i));
 
 		// Make it visible: Create a frame.
@@ -591,6 +608,7 @@ public class BeamObject {
 	public double getFrequency() {return frequency;}
 	public double getN() {return n;}
 	public Complex getWeighting() {return weighting;}
+	public double getAngle() {return angle;}
 
 	public void setI(double[] array) {I = Arrays.copyOf(array, array.length);}
 	public void setQ(double[] array) {Q = Arrays.copyOf(array, array.length);}
@@ -599,5 +617,6 @@ public class BeamObject {
 	public void setFrequency(double frequency) {this.frequency = frequency;}
 	public void setN(double n) {this.n = n;}
 	public void setWeighting(Complex weighting2) {this.weighting = weighting2;}
+	public void setAngle(double angle) {this.angle = angle;}
 
 }
