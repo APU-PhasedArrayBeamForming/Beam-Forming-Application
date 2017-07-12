@@ -244,12 +244,12 @@ public class BeamObject {
 		//				absZf = absComplex(Zf);
 	}
 
-	public void addWeightings(Complex[] b1, Complex[] b2, Complex[] b3, Complex[] b4, Complex[] b5, Complex[] b6, Complex[] b7, Complex[] b8)
+	public void addWeightings(Complex[] b1, Complex[] b2, Complex[] b3, Complex[] b4, Complex[] b5)
 	{
 		Complex[] addedWeightings = new Complex[zTimesWeightings.length];
 		for (int i = 0; i < zTimesWeightings.length; i++)
 		{
-			addedWeightings[i] = b1[i].plus(b2[i]).plus(b3[i]).plus(b4[i]).plus(b5[i]).plus(b6[i]).plus(b7[i]).plus(b8[i]);
+			addedWeightings[i] = b1[i].plus(b2[i]).plus(b3[i]).plus(b4[i]).plus(b5[i]);
 		}
 
 		absAddedWeightings = absComplex(addedWeightings);

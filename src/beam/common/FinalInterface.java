@@ -52,9 +52,6 @@ public class FinalInterface extends JFrame {
 	private JTextField tfFilePath3;
 	private JTextField tfFilePath4;
 	private JTextField tfFilePath5;
-	private JTextField tfFilePath6;
-	private JTextField tfFilePath7;
-	private JTextField tfFilePath8;
 	private JTextField tfDistance;
 	private JLabel lblAngle;
 	private JLabel lblInches;
@@ -90,7 +87,7 @@ public class FinalInterface extends JFrame {
 		//		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
 		//		setBounds(100, 100, screenSize.width, screenSize.height);
 
-		setBounds(100, 100, 586, 484);
+		setBounds(100, 100, 586, 370);
 
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -211,66 +208,6 @@ public class FinalInterface extends JFrame {
 		tfFilePath5 = new JTextField();
 		tfFilePath5.setColumns(10);
 		
-		JButton btnSelectFile6 = new JButton("Select File 6");
-		
-		btnSelectFile6.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				int result = fileChooser.showOpenDialog(tfFilePath1);
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-				    tfFilePath6.setText(selectedFile.getAbsolutePath());
-				}
-			}
-		});
-		
-		JButton btnSelectFile7 = new JButton("Select File 7");
-		
-		btnSelectFile7.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				int result = fileChooser.showOpenDialog(tfFilePath1);
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-				    tfFilePath7.setText(selectedFile.getAbsolutePath());
-				}
-			}
-		});
-		
-		JButton btnSelectFile8 = new JButton("Select File 8");
-		
-		btnSelectFile8.addActionListener(new ActionListener() 
-		{
-			public void actionPerformed(ActionEvent e) 
-			{
-				JFileChooser fileChooser = new JFileChooser();
-				fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-				int result = fileChooser.showOpenDialog(tfFilePath1);
-				if (result == JFileChooser.APPROVE_OPTION) {
-				    File selectedFile = fileChooser.getSelectedFile();
-				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
-				    tfFilePath8.setText(selectedFile.getAbsolutePath());
-				}
-			}
-		});
-		
-		tfFilePath6 = new JTextField();
-		tfFilePath6.setColumns(10);
-		
-		tfFilePath7 = new JTextField();
-		tfFilePath7.setColumns(10);
-		
-		tfFilePath8 = new JTextField();
-		tfFilePath8.setColumns(10);
-		
 		JLabel lblDistance = new JLabel("Distance:");
 		
 		tfDistance = new JTextField();
@@ -305,70 +242,56 @@ public class FinalInterface extends JFrame {
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-						.addGroup(gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnSelectFile1)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath1, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnSelectFile2)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath2, 406, 406, 406))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addComponent(lblFrequency)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(tfFreq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addComponent(lblNumberOfIterations)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(tfN, 0, 0, Short.MAX_VALUE)))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(lblMHz)
-									.addPreferredGap(ComponentPlacement.RELATED, 60, Short.MAX_VALUE)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(60)
-											.addComponent(lblDistance)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(tfDistance, GroupLayout.PREFERRED_SIZE, 70, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblInches))
-										.addGroup(gl_contentPane.createSequentialGroup()
-											.addGap(59)
+						.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(btnSelectFile1)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(tfFilePath1, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(btnSelectFile2)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(tfFilePath2, 406, 406, 406))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+											.addComponent(btnSelectFile3)
+											.addComponent(btnSelectFile4))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+											.addComponent(tfFilePath4, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
+											.addComponent(tfFilePath3, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(btnSelectFile5)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(tfFilePath5, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addPreferredGap(ComponentPlacement.RELATED, 351, Short.MAX_VALUE)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 											.addComponent(lblAngle)
-											.addPreferredGap(ComponentPlacement.UNRELATED)
-											.addComponent(tfAngle, GroupLayout.PREFERRED_SIZE, 83, GroupLayout.PREFERRED_SIZE)
-											.addPreferredGap(ComponentPlacement.RELATED)
-											.addComponent(lblDegrees)))
-									.addPreferredGap(ComponentPlacement.RELATED))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(btnSelectFile3)
-										.addComponent(btnSelectFile4))
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(tfFilePath4, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)
-										.addComponent(tfFilePath3, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnSelectFile5)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath5, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnSelectFile6)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath6, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnSelectFile7)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath7, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE))
-								.addGroup(gl_contentPane.createSequentialGroup()
-									.addComponent(btnSelectFile8)
-									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath8, GroupLayout.DEFAULT_SIZE, 406, Short.MAX_VALUE)))
-							.addGap(39))
+											.addComponent(lblDistance))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+											.addComponent(tfAngle, 0, 0, Short.MAX_VALUE)
+											.addComponent(tfDistance, GroupLayout.DEFAULT_SIZE, 70, Short.MAX_VALUE))
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+											.addComponent(lblDegrees)
+											.addComponent(lblInches))))
+								.addGap(39))
+							.addGroup(gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(lblNumberOfIterations)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(tfN, 0, 0, Short.MAX_VALUE))
+									.addGroup(gl_contentPane.createSequentialGroup()
+										.addComponent(lblFrequency)
+										.addPreferredGap(ComponentPlacement.RELATED)
+										.addComponent(tfFreq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)))
+								.addPreferredGap(ComponentPlacement.RELATED)
+								.addComponent(lblMHz)
+								.addContainerGap(338, Short.MAX_VALUE)))
 						.addGroup(Alignment.TRAILING, gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 							.addComponent(btnGraph, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
 							.addComponent(btnRun, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -396,40 +319,29 @@ public class FinalInterface extends JFrame {
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(btnSelectFile5)
 						.addComponent(tfFilePath5, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSelectFile6)
-						.addComponent(tfFilePath6, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSelectFile7)
-						.addComponent(tfFilePath7, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addPreferredGap(ComponentPlacement.RELATED)
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-						.addComponent(btnSelectFile8)
-						.addComponent(tfFilePath8, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-					.addGap(32)
+					.addGap(18)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 						.addComponent(lblFrequency)
 						.addComponent(tfFreq, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(tfDistance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-						.addComponent(lblInches)
+						.addComponent(lblMHz)
 						.addComponent(lblDistance)
-						.addComponent(lblMHz))
+						.addComponent(tfDistance, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+						.addComponent(lblInches))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(lblAngle)
-							.addComponent(lblNumberOfIterations)
-							.addComponent(tfN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE))
-						.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
-							.addComponent(tfAngle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
-							.addComponent(lblDegrees)))
-					.addGap(18)
-					.addComponent(btnRun)
+							.addComponent(tfN, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+							.addComponent(lblNumberOfIterations))
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
+								.addComponent(lblAngle)
+								.addComponent(tfAngle, GroupLayout.PREFERRED_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.PREFERRED_SIZE)
+								.addComponent(lblDegrees))
+							.addGap(18)
+							.addComponent(btnRun)))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnGraph)
-					.addGap(119))
+					.addGap(321))
 		);
 
 		contentPane.setLayout(gl_contentPane);
@@ -484,32 +396,9 @@ public class FinalInterface extends JFrame {
 				b5 = new BeamObject(b5.getFilePath(), b5.getFrequency(), b5.getN(), b5.getWeighting());	
 				
 				
-				BeamObject b6 = new BeamObject();
-				b6.setFilePath(tfFilePath6.getText());
-				b6.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b6.setN(Integer.parseInt(tfN.getText()));
-				b6.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 5));
-				b6 = new BeamObject(b6.getFilePath(), b6.getFrequency(), b6.getN(), b6.getWeighting());	
-				
-				
-				BeamObject b7 = new BeamObject();
-				b7.setFilePath(tfFilePath7.getText());
-				b7.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b7.setN(Integer.parseInt(tfN.getText()));
-				b7.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 6));
-				b7 = new BeamObject(b7.getFilePath(), b7.getFrequency(), b7.getN(), b7.getWeighting());	
-				
-				
-				BeamObject b8 = new BeamObject();
-				b8.setFilePath(tfFilePath8.getText());
-				b8.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b8.setN(Integer.parseInt(tfN.getText()));
-				b8.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 7));
-				b8 = new BeamObject(b8.getFilePath(), b8.getFrequency(), b8.getN(), b8.getWeighting());	
-				
 				
 				b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
-						b5.zTimesWeightings, b6.zTimesWeightings, b7.zTimesWeightings, b8.zTimesWeightings);
+						b5.zTimesWeightings);
 				
 			}
 
