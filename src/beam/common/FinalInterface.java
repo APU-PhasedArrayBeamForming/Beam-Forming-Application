@@ -61,6 +61,8 @@ public class FinalInterface extends JFrame {
 	private JTextField tfAngle;
 	private JLabel lblDegrees;
 	private JLabel lblMHz;
+	
+	public BeamObject b1 = new BeamObject();
 
 
 	/**
@@ -292,8 +294,7 @@ public class FinalInterface extends JFrame {
 		btnGraph.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) 
 			{
-				BeamObject b = new BeamObject();
-				b.finalGraph();
+				b1.finalGraph();
 			}
 		});
 		
@@ -437,7 +438,13 @@ public class FinalInterface extends JFrame {
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
-				BeamObject b1 = new BeamObject();
+//				b.setAngle(Double.parseDouble(tfAngle.getText()));
+//				b.setFrequency(Double.parseDouble(tfFreq.getText()));
+//				b.setN(Integer.parseInt(tfN.getText()));
+//				b.setWeighting(b.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 0));
+				
+				
+				//BeamObject b1 = new BeamObject();
 				b1.setFilePath(tfFilePath1.getText());
 				b1.setFrequency(Double.parseDouble(tfFreq.getText()));
 				b1.setN(Integer.parseInt(tfN.getText()));
