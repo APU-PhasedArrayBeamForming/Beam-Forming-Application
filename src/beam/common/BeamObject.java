@@ -333,7 +333,10 @@ public class BeamObject {
 		// Create connection to fileName for reading
 		FileInputStream fis = null;
 		Scanner fScan = null;
+		signalAngle = new ArrayList<>();
+		signalPower = new ArrayList<>();
 		ArrayList<AngleVsPower> plotPoints = new ArrayList<AngleVsPower>();
+		
 
 		try
 		{
@@ -353,6 +356,7 @@ public class BeamObject {
 				//AngleVsPower pp = new AngleVsPower();
 				pp.setSignalAngle(Double.parseDouble(lineScan.next().trim()));
 				signalAngle.add(pp.getSignalAngle());
+//				System.out.println(pp.getSignalAngle());
 				pp.setSignalPower(Double.parseDouble(lineScan.next().trim()));
 				signalPower.add(pp.getSignalPower());
 				plotPoints.add(pp);

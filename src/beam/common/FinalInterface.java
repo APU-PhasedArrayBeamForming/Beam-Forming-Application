@@ -511,7 +511,6 @@ public class FinalInterface extends JFrame {
 				b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
 						b5.zTimesWeightings, b6.zTimesWeightings, b7.zTimesWeightings, b8.zTimesWeightings);
 				
-				
 			}
 
 		});

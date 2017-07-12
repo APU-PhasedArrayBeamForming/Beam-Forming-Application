@@ -22,6 +22,14 @@ public class AngleVsPower {
 		signalAngle = angle;
 		signalPower = power;
 	}
+	
+	public String toString()
+	{
+		String ret = "";
+		ret += this.signalAngle + ", " + this.signalPower + "\n";
+			
+		return ret;		
+	}
 
 	/////////////////////////////////////////////////////////////////////
 	// Getters - public returnType getInstanceVarName()

@@ -201,16 +201,15 @@ public class BeamInterface extends JFrame {
 				
 				b.setFilePath(tfFilePath.getText());
 				b.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b.setSample(Double.parseDouble(tfSampleRate.getText()));
 				b.setN(Integer.parseInt(tfN.getText()));;
 				
 				
-				b = new BeamObject(b.getFilePath(), b.getFrequency(), b.getN(), null);
+//				b = new BeamObject(b.getFilePath(), b.getFrequency(), b.getN(), b.getSample(), );
 				
 
 				Chart2D graph = b.graphFiltered();
 				Chart2D graph2 = b.graphUnfiltered();
-				
+
 			}
 		});
 		
