@@ -111,6 +111,15 @@ public class Complex {
     public Complex exp() {
         return new Complex(Math.exp(re) * Math.cos(im), Math.exp(re) * Math.sin(im));
     }
+    
+    //mine
+    /**
+     * Computes the complex exponential function, e^z, where z is this complex number.
+     */
+    public Complex exponential() {
+        double length = Math.exp(re);
+        return new Complex( length*Math.cos(im), length*Math.sin(im) );
+      }
 
     // return a new Complex object whose value is the complex sine of this
     public Complex sin() {

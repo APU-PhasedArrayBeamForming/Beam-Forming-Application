@@ -205,9 +205,20 @@ public class BeamObject {
 
 		double k = (2*pi*freq)/c;
 
-		double power = k*distance*Math.sin(angle);
-
+		double power = k*distance*Math.sin(Math.toRadians(angle)); //k* d(n) *sin(theta) 
+		//need toRadians?
+		
+		//theirs (sarah can you explain to me?)
 		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
+		
+		//mine
+		//Complex complexPower = new Complex(0, (power)*-1);
+		
+		//Complex weighting =complexPower.exponential();
+		
+		System.out.println();
+		System.out.println(weighting);
+		System.out.println();
 
 		return weighting;
 	}
