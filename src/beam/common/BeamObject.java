@@ -132,40 +132,43 @@ public class BeamObject {
 	//Methods
 	
 	//method to chop of ends of recordings to match each other. 
-	  //need to know pattern (i pretended pulse was 10 "99"s right after each other. 
-	  //need to add Q also. 
-	//  public void alignRecordings() 
-	//  { 
-//	    //rewrite array to chop off at first part. 
-//	    int j=0; 
-//	    int locationEnd=0; 
-//	    int locationStart=0; 
-//	    for (int i=0;i<I.length;i++) 
-//	    { 
-//	      if (I[i]==99) 
-//	      { 
-//	        j++; 
-//	        if ((j==10)&&(locationEnd==0)) 
-//	        { 
-//	          locationEnd=i+1; 
-//	          j=0; 
-//	        } 
-//	        if ((j==10)&&(locationEnd!=0)) 
-//	        { 
-//	          locationStart=locationEnd; 
-//	          locationEnd=i-10; 
-//	          j=0; 
-//	          for (int i2=locationStart;i<I.length-locationStart-(I.length-locationEnd);i2++) 
-//	          { 
-//	            //ICut size: double ICut= new double[I.length-locationStart-locationEnd]; 
-//	            ICut[j]=I[i2];
-//	            QCut[j]=Q[i2];
-//				j++; 
-//	          } 
-//	        } 
-//	      } 
-//	    } 
-	//  } 
+	  //need to know pattern (i check that there is 2 pts in a row above threshold, and cut from first above threshold). (99 for example)
+	
+	  public void alignRecordings() 
+	  {  
+	    int j=0; 
+	    int locationEnd=0; 
+	    int locationStart=0;
+	    int counter=0;
+	    for (int i=0;i<I.length;i++) 
+	    { 
+	      if (I[i]>99) 								//if above threshold...
+	      { 
+	    	  j++;
+	    	  if (j>2)
+	    	  {
+	    		  locationStart=i-2;
+	    		  j=0;
+	    	  }
+	      }
+	      else if (I[i]<99)
+	      {
+	    	  j=0;
+	      }
+	      else if (I[i]<99&&locationStart!=0)
+	      {
+	    	  locationEnd=i;
+	    	  for (int i2=locationStart; i2<=locationEnd; i2++)
+	    	  {
+	    		  double[] ICut= new double[I.length-locationStart-locationEnd];
+	    		  double[] QCut= new double[I.length-locationStart-locationEnd];
+	    		  ICut[counter]=I[i2];
+		          QCut[counter]=Q[i2];
+		          counter++;
+	    	  }
+	      }
+	    }
+	  } 
 	
 	public Chart2D graphUnfiltered()
 	{
