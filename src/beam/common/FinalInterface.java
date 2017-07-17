@@ -117,11 +117,13 @@ public class FinalInterface extends JFrame {
 		lblFrequency = new JLabel("Frequency:");
 		
 		tfFreq = new JTextField();
+		tfFreq.setText("104.3");
 		tfFreq.setColumns(10);
 		
 		lblNumberOfIterations = new JLabel("Number of Iterations:");
 		
 		tfN = new JTextField();
+		tfN.setText("128");
 		tfN.setColumns(10);
 		
 		
@@ -211,6 +213,7 @@ public class FinalInterface extends JFrame {
 		JLabel lblDistance = new JLabel("Distance:");
 		
 		tfDistance = new JTextField();
+		tfDistance.setText("5.4");
 		tfDistance.setColumns(10);
 		
 		lblAngle = new JLabel("Angle:");

@@ -103,6 +103,7 @@ public class BeamObject {
 		{
 			p = Math.floor(Math.log(this.n) / Math.log(2));
 			this.n = Math.pow(2, p);
+			//doesn't work i think
 			System.out.println("Used 'n' from data.");
 		}
 		else
