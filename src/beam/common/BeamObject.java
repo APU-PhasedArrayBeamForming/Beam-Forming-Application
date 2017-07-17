@@ -261,9 +261,9 @@ public class BeamObject {
 		
 		//Complex weighting =complexPower.exponential();
 		
-		System.out.println();
-		System.out.println(weighting);
-		System.out.println();
+//		System.out.println();
+//		System.out.println(weighting);
+//		System.out.println();
 
 		return weighting;
 	}
