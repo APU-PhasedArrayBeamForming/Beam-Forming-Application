@@ -357,6 +357,7 @@ public class BeamObject {
 				pw.write(pp.getSignalPower() + "");
 				pw.println("");
 				
+				System.out.println();
 				System.out.println(pp.getSignalAngle() + ", " + pp.getSignalPower());
 			}
 			
