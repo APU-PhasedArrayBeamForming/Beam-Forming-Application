@@ -145,20 +145,19 @@ public class BeamObject {
 	      if (I[i]>99) 								//if above threshold...
 	      { 
 	    	  j++;
-	    	  if (j>2)
+	    	  if (j>2&&locationStart==0)			//if second in a row above threshold, 
 	    	  {
-	    		  locationStart=i-2;
-	    		  j=0;
+	    		  locationStart=i-1;				//then this is where we cut first end.
 	    	  }
 	      }
-	      else if (I[i]<99)
+	      else if (I[i]<=99)							//to make sure at least two are in a row.
 	      {
 	    	  j=0;
 	      }
-	      else if (I[i]<99&&locationStart!=0)
+	      else if (I[i]<=99&&locationStart!=0&&locationEnd==0)		//if below/at threshold and first end has been set already,
 	      {
-	    	  locationEnd=i;
-	    	  for (int i2=locationStart; i2<=locationEnd; i2++)
+	    	  locationEnd=i;										//set ending of our snippet.
+	    	  for (int i2=locationStart; i2<=locationEnd; i2++)			//make snippet.
 	    	  {
 	    		  double[] ICut= new double[I.length-locationStart-locationEnd];
 	    		  double[] QCut= new double[I.length-locationStart-locationEnd];
