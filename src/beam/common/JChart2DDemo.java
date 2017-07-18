@@ -5,9 +5,11 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.io.File;
 import java.util.Random;
+
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
  
+
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
@@ -15,6 +17,7 @@ import info.monitorenter.gui.chart.io.ADataCollector;
 import info.monitorenter.gui.chart.io.RandomDataCollectorTimeStamped;
 import info.monitorenter.gui.chart.traces.Trace2DLtd;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
+import info.monitorenter.gui.chart.traces.painters.TracePainterDisc;
  
 public class JChart2DDemo {
  
@@ -97,7 +100,11 @@ public class JChart2DDemo {
         trace.setName("Dynamic Demo");
  
         // Add the trace to the chart:
+       
         chart.addTrace(trace);
+        //doesn't work.
+        //trace.setTracePainter(new TracePainterDisc(4));
+        
  
         chart.setBackground(Color.LIGHT_GRAY);
         chart.setForeground(Color.BLUE);

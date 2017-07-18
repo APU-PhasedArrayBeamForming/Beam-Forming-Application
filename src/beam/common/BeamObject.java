@@ -39,6 +39,8 @@ public class BeamObject {
 
 	private double I[];
 	private double Q[];
+	public double ICut[]; 
+	public double QCut[]; 
 	public Complex E[];
 	public Complex fE[];
 	public double fr[];
@@ -92,33 +94,28 @@ public class BeamObject {
 		//double [][] IQdata = readFileWithBufferSize((n), filePath);
 
 		double [][] IQdata = readFileWithBufferSize(filePath);
-
 		I = Arrays.copyOf(IQdata[0], (int) n);
 		Q = Arrays.copyOf(IQdata[1], (int) n);
-
-		this.n = I.length;
-		if (this.n < n)
-		{
-			p = Math.floor(Math.log(this.n) / Math.log(2));
+		
+			p = Math.floor(Math.log(n) / Math.log(2));
 			this.n = Math.pow(2, p);
+			//doesn't work i think
 			System.out.println("Used 'n' from data.");
-		}
-		else
-		{
-			this.n = n;
-		}
+			
 
-		this.setWeighting(weighting);
+
+		
 		this.filePath = filePath;
 		this.frequency = frequency*1000000; 		// Convert Frequency into kHz
-		this.n = n;
 		omega = 2*Math.PI*frequency;
 		dt = 1/sample;
 
 		makeE();
+		System.out.println(n);
 		fourierTransform();
 		filterAndWeightings(weighting);
 		//filter();
+		this.setWeighting(weighting);
 		
 	
 	}
@@ -127,7 +124,45 @@ public class BeamObject {
 
 
 	//Methods
-
+	
+	//method to chop of ends of recordings to match each other. 
+	  //need to know pattern (i check that there is 2 pts in a row above threshold, and cut from first above threshold). (99 for example)
+	
+	  public void alignRecordings() 
+	  {  
+	    int j=0; 
+	    int locationEnd=0; 
+	    int locationStart=0;
+	    int counter=0;
+	    for (int i=0;i<I.length;i++) 
+	    { 
+	      if (I[i]>99) 								//if above threshold...
+	      { 
+	    	  j++;
+	    	  if (j>2&&locationStart==0)			//if second in a row above threshold, 
+	    	  {
+	    		  locationStart=i-1;				//then this is where we cut first end.
+	    	  }
+	      }
+	      else if (I[i]<=99)							//to make sure at least two are in a row.
+	      {
+	    	  j=0;
+	      }
+	      else if (I[i]<=99&&locationStart!=0&&locationEnd==0)		//if below/at threshold and first end has been set already,
+	      {
+	    	  locationEnd=i;										//set ending of our snippet.
+	    	  for (int i2=locationStart; i2<=locationEnd; i2++)			//make snippet.
+	    	  {
+	    		  double[] ICut= new double[I.length-locationStart-locationEnd];
+	    		  double[] QCut= new double[I.length-locationStart-locationEnd];
+	    		  ICut[counter]=I[i2];
+		          QCut[counter]=Q[i2];
+		          counter++;
+	    	  }
+	      }
+	    }
+	  } 
+	
 	public Chart2D graphUnfiltered()
 	{
 		// Create a chart:  
@@ -205,9 +240,24 @@ public class BeamObject {
 
 		double k = (2*pi*freq)/c;
 
-		double power = k*distance*Math.sin(angle);
-
+		//mine
+		double power = k*distance*Math.sin(Math.toRadians(angle)); //k* d(n) *sin(theta) 
+		
+		//theirs
+		//double power = k*distance*Math.sin(angle);
+		//need toRadians?
+		
+		//theirs (sarah can you explain to me?)
 		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
+		
+		//mine
+		//Complex complexPower = new Complex(0, (power)*-1);
+		
+		//Complex weighting =complexPower.exponential();
+		
+//		System.out.println();
+//		System.out.println(weighting);
+//		System.out.println();
 
 		return weighting;
 	}
@@ -301,6 +351,7 @@ public class BeamObject {
 				pw.write(pp.getSignalPower() + "");
 				pw.println("");
 				
+				System.out.println();
 				System.out.println(pp.getSignalAngle() + ", " + pp.getSignalPower());
 			}
 			
@@ -619,7 +670,10 @@ public class BeamObject {
 	public void setH(double[] array) {h = Arrays.copyOf(array, array.length);}
 	public void setFilePath(String filePath) {this.filePath = filePath;}
 	public void setFrequency(double frequency) {this.frequency = frequency;}
-	public void setN(double n) {this.n = n;}
+	public void setN(double n) {p = Math.floor(Math.log(n) / Math.log(2));
+	this.n = Math.pow(2, p);
+	//doesn't work i think
+	System.out.println("Used 'n' from data.");}
 	public void setWeighting(Complex weighting2) {this.weighting = weighting2;}
 	public void setAngle(double angle) {this.angle = angle;}
 
