@@ -94,31 +94,24 @@ public class BeamObject {
 		//double [][] IQdata = readFileWithBufferSize((n), filePath);
 
 		double [][] IQdata = readFileWithBufferSize(filePath);
-
 		I = Arrays.copyOf(IQdata[0], (int) n);
 		Q = Arrays.copyOf(IQdata[1], (int) n);
-
-		this.n = I.length;
-		if (this.n < n)
-		{
-			p = Math.floor(Math.log(this.n) / Math.log(2));
+		
+			p = Math.floor(Math.log(n) / Math.log(2));
 			this.n = Math.pow(2, p);
 			//doesn't work i think
 			System.out.println("Used 'n' from data.");
-		}
-		else
-		{
-			this.n = n;
-		}
+			
+
 
 		
 		this.filePath = filePath;
 		this.frequency = frequency*1000000; 		// Convert Frequency into kHz
-		this.n = n;
 		omega = 2*Math.PI*frequency;
 		dt = 1/sample;
 
 		makeE();
+		System.out.println(n);
 		fourierTransform();
 		filterAndWeightings(weighting);
 		//filter();
@@ -677,7 +670,10 @@ public class BeamObject {
 	public void setH(double[] array) {h = Arrays.copyOf(array, array.length);}
 	public void setFilePath(String filePath) {this.filePath = filePath;}
 	public void setFrequency(double frequency) {this.frequency = frequency;}
-	public void setN(double n) {this.n = n;}
+	public void setN(double n) {p = Math.floor(Math.log(n) / Math.log(2));
+	this.n = Math.pow(2, p);
+	//doesn't work i think
+	System.out.println("Used 'n' from data.");}
 	public void setWeighting(Complex weighting2) {this.weighting = weighting2;}
 	public void setAngle(double angle) {this.angle = angle;}
 
