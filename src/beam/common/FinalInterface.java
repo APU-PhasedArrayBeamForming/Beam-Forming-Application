@@ -395,50 +395,100 @@ public class FinalInterface extends JFrame {
 				
 				
 				//BeamObject b1 = new BeamObject();
-				b1.setFilePath(tfFilePath1.getText());
-				b1.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b1.setN(Integer.parseInt(tfN.getText()));
-				b1.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 0));
-				b1 = new BeamObject(b1.getFilePath(), b1.getFrequency(), b1.getN(), b1.getWeighting());
+//				b1.setFilePath(tfFilePath1.getText());
+//				b1.setFrequency(Double.parseDouble(tfFreq.getText()));
+//				b1.setN(Integer.parseInt(tfN.getText()));
+//				b1.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 0));
+//				b1 = new BeamObject(b1.getFilePath(), b1.getFrequency(), b1.getN(), b1.getWeighting());
+//				
+//				
+//				BeamObject b2 = new BeamObject();
+//				b2.setFilePath(tfFilePath2.getText());
+//				b2.setFrequency(Double.parseDouble(tfFreq.getText()));
+//				b2.setN(Integer.parseInt(tfN.getText()));
+//				b2.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 1));
+//				b2 = new BeamObject(b2.getFilePath(), b2.getFrequency(), b2.getN(), b2.getWeighting());	
+//				
+//				
+//				BeamObject b3 = new BeamObject();
+//				b3.setFilePath(tfFilePath3.getText());
+//				b3.setFrequency(Double.parseDouble(tfFreq.getText()));
+//				b3.setN(Integer.parseInt(tfN.getText()));
+//				b3.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 2));
+//				b3 = new BeamObject(b3.getFilePath(), b3.getFrequency(), b3.getN(), b3.getWeighting());	
+//				
+//				
+//				BeamObject b4 = new BeamObject();
+//				b4.setFilePath(tfFilePath4.getText());
+//				b4.setFrequency(Double.parseDouble(tfFreq.getText()));
+//				b4.setN(Integer.parseInt(tfN.getText()));
+//				b4.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 3));
+//				b4 = new BeamObject(b4.getFilePath(), b4.getFrequency(), b4.getN(), b4.getWeighting());	
+//				
+//				
+//				BeamObject b5 = new BeamObject();
+//				b5.setFilePath(tfFilePath5.getText());
+//				b5.setFrequency(Double.parseDouble(tfFreq.getText()));
+//				b5.setN(Integer.parseInt(tfN.getText()));
+//				b5.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 4));
+//				b5 = new BeamObject(b5.getFilePath(), b5.getFrequency(), b5.getN(), b5.getWeighting());	
+//				
+//				
+//				
+//				b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
+//						b5.zTimesWeightings);
+double increment = Double.parseDouble(tfAngle.getText());
 				
-				
-				BeamObject b2 = new BeamObject();
-				b2.setFilePath(tfFilePath2.getText());
-				b2.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b2.setN(Integer.parseInt(tfN.getText()));
-				b2.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 1));
-				b2 = new BeamObject(b2.getFilePath(), b2.getFrequency(), b2.getN(), b2.getWeighting());	
-				
-				
-				BeamObject b3 = new BeamObject();
-				b3.setFilePath(tfFilePath3.getText());
-				b3.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b3.setN(Integer.parseInt(tfN.getText()));
-				b3.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 2));
-				b3 = new BeamObject(b3.getFilePath(), b3.getFrequency(), b3.getN(), b3.getWeighting());	
-				
-				
-				BeamObject b4 = new BeamObject();
-				b4.setFilePath(tfFilePath4.getText());
-				b4.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b4.setN(Integer.parseInt(tfN.getText()));
-				b4.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 3));
-				b4 = new BeamObject(b4.getFilePath(), b4.getFrequency(), b4.getN(), b4.getWeighting());	
-				
-				
-				BeamObject b5 = new BeamObject();
-				b5.setFilePath(tfFilePath5.getText());
-				b5.setFrequency(Double.parseDouble(tfFreq.getText()));
-				b5.setN(Integer.parseInt(tfN.getText()));
-				b5.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 4));
-				b5 = new BeamObject(b5.getFilePath(), b5.getFrequency(), b5.getN(), b5.getWeighting());	
-				
-				
-				
-				b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
-						b5.zTimesWeightings);
+				for (int angle = 0; angle <= 360; angle+=increment)
+				{
+					b1.setFilePath(tfFilePath1.getText());
+					b1.setFrequency(Double.parseDouble(tfFreq.getText()));
+					b1.setN(Integer.parseInt(tfN.getText()));
+					b1.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), angle, 0));
+					b1 = new BeamObject(b1.getFilePath(), b1.getFrequency(), b1.getN(), b1.getWeighting());
+					
+					
+					BeamObject b2 = new BeamObject();
+					b2.setFilePath(tfFilePath2.getText());
+					b2.setFrequency(Double.parseDouble(tfFreq.getText()));
+					b2.setN(Integer.parseInt(tfN.getText()));
+					b2.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), angle, 1));
+					b2 = new BeamObject(b2.getFilePath(), b2.getFrequency(), b2.getN(), b2.getWeighting());	
+					
+					
+					BeamObject b3 = new BeamObject();
+					b3.setFilePath(tfFilePath3.getText());
+					b3.setFrequency(Double.parseDouble(tfFreq.getText()));
+					b3.setN(Integer.parseInt(tfN.getText()));
+					b3.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), angle, 2));
+					b3 = new BeamObject(b3.getFilePath(), b3.getFrequency(), b3.getN(), b3.getWeighting());	
+					
+					
+					BeamObject b4 = new BeamObject();
+					b4.setFilePath(tfFilePath4.getText());
+					b4.setFrequency(Double.parseDouble(tfFreq.getText()));
+					b4.setN(Integer.parseInt(tfN.getText()));
+					b4.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), angle, 3));
+					b4 = new BeamObject(b4.getFilePath(), b4.getFrequency(), b4.getN(), b4.getWeighting());	
+					
+					
+					BeamObject b5 = new BeamObject();
+					b5.setFilePath(tfFilePath5.getText());
+					b5.setFrequency(Double.parseDouble(tfFreq.getText()));
+					b5.setN(Integer.parseInt(tfN.getText()));
+					b5.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), angle, 4));
+					b5 = new BeamObject(b5.getFilePath(), b5.getFrequency(), b5.getN(), b5.getWeighting());	
+					
+					
+					
+					b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
+							b5.zTimesWeightings);
+				}
 				
 			}
+
+				
+			
 
 		});
 	}
