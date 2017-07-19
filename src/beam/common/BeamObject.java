@@ -1,17 +1,12 @@
 package beam.common;
 
-import java.awt.Color;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -19,11 +14,7 @@ import java.util.Scanner;
 import javax.swing.JFrame;
 
 import info.monitorenter.gui.chart.Chart2D;
-import info.monitorenter.gui.chart.IAxis;
 import info.monitorenter.gui.chart.ITrace2D;
-import info.monitorenter.gui.chart.io.ADataCollector;
-import info.monitorenter.gui.chart.io.RandomDataCollectorTimeStamped;
-import info.monitorenter.gui.chart.traces.Trace2DLtd;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
 
 public class BeamObject {
@@ -46,6 +37,8 @@ public class BeamObject {
 	public double fr[];
 	public double absfE[];
 
+	//Filter. If we need the filter, n size is set to this size (32) if n is less than
+	//32. This makes it so we have no errors when applying a filter
 	double[] h  = new double[] {-0.0007433, 0.0008555, 0.0029073, 0.005288, 0.0061011,
 			0.0031605, -0.0046278, -0.0157893, -0.0256264, -0.0271283, -0.013497,
 			0.0185766, 0.0663613, 0.1206791, 0.1682412, 0.1960321, 0.1960321,
@@ -72,13 +65,13 @@ public class BeamObject {
 
 
 	/**
-	 * Constructor
+	 * Default Constructor: Should only be used when pre-initializing data
+	 * before adding other needed values. Will not read in file.
 	 * @param filePath
 	 * @param frequency
 	 * @param n
 	 * @param sample
 	 */
-
 	public BeamObject()
 	{
 		filePath = null;
@@ -87,6 +80,16 @@ public class BeamObject {
 		weighting = new Complex(0,0);
 	}
 
+	/**
+	 * Overloaded constructor: Calculates the n value based on what was input,
+	 * it will round to the closest power of 2 based off the input. Will also
+	 * read in the .wav file from the filePath and uses the rest of the data
+	 * to initialize and calculate the beginning array values.
+	 * @param filePath
+	 * @param frequency
+	 * @param n
+	 * @param weighting
+	 */
 	public BeamObject(String filePath, double frequency, double n, Complex weighting) 
 	{
 
@@ -96,141 +99,83 @@ public class BeamObject {
 		double [][] IQdata = readFileWithBufferSize(filePath);
 		I = Arrays.copyOf(IQdata[0], (int) n);
 		Q = Arrays.copyOf(IQdata[1], (int) n);
-		
-			p = Math.floor(Math.log(n) / Math.log(2));
-			this.n = Math.pow(2, p);
-			//doesn't work i think
-			System.out.println("Used 'n' from data.");
-			
 
+		//Rounds to the nearest power of 2
+		p = Math.floor(Math.log(n) / Math.log(2));
+		this.n = Math.pow(2, p);
+		System.out.println("Used 'n' from data.");
 
-		
 		this.filePath = filePath;
 		this.frequency = frequency*1000000; 		// Convert Frequency into kHz
+
 		omega = 2*Math.PI*frequency;
 		dt = 1/sample;
 
 		makeE();
-		System.out.println(n);
+		System.out.println("Changed n to: " + n);
 		fourierTransform();
 		filterAndWeightings(weighting);
 		//filter();
 		this.setWeighting(weighting);
-		
-	
 	}
 
 
 
 
-	//Methods
-	
-	//method to chop of ends of recordings to match each other. 
-	  //need to know pattern (i check that there is 2 pts in a row above threshold, and cut from first above threshold). (99 for example)
-	
-	  public void alignRecordings() 
-	  {  
-	    int j=0; 
-	    int locationEnd=0; 
-	    int locationStart=0;
-	    int counter=0;
-	    for (int i=0;i<I.length;i++) 
-	    { 
-	      if (I[i]>99) 								//if above threshold...
-	      { 
-	    	  j++;
-	    	  if (j>2&&locationStart==0)			//if second in a row above threshold, 
-	    	  {
-	    		  locationStart=i-1;				//then this is where we cut first end.
-	    	  }
-	      }
-	      else if (I[i]<=99)							//to make sure at least two are in a row.
-	      {
-	    	  j=0;
-	      }
-	      else if (I[i]<=99&&locationStart!=0&&locationEnd==0)		//if below/at threshold and first end has been set already,
-	      {
-	    	  locationEnd=i;										//set ending of our snippet.
-	    	  for (int i2=locationStart; i2<=locationEnd; i2++)			//make snippet.
-	    	  {
-	    		  double[] ICut= new double[I.length-locationStart-locationEnd];
-	    		  double[] QCut= new double[I.length-locationStart-locationEnd];
-	    		  ICut[counter]=I[i2];
-		          QCut[counter]=Q[i2];
-		          counter++;
-	    	  }
-	      }
-	    }
-	  } 
-	
-	public Chart2D graphUnfiltered()
-	{
-		// Create a chart:  
-		Chart2D chart = new Chart2D();
-
-		// Create an ITrace: 
-		ITrace2D trace = new Trace2DSimple(); 
-		trace.setName("");
-
-		// Add the trace to the chart. This has to be done before adding points (deadlock prevention): 
-		chart.addTrace(trace);    
-
-		// Add all points, as it is static: 
-
-
-		for (int i = 0; i < n; i++)					// Unfiltered version
-			trace.addPoint(fr[i], absfE[i]);
-
-		// Make it visible: Create a frame.
-		JFrame frame = new JFrame("MinimalStaticChart");
-
-		// add the chart to the frame: 
-		frame.getContentPane().add(chart);
-		frame.setSize(600,400);
-		frame.setTitle("Unfiltered Data");
-		frame.setLocation(850, 0);
-
-		frame.setVisible(true);
-
-
-		return chart;
+	/**
+	 * alignRecordings: Used to chop the ends of the recordings so that they match each other.
+	 * Currently not used yet. Need to know the pattern, i checks that there is 2 pts in a row
+	 * above the threshold, and cut from first above threshold.
+	 */
+	public void alignRecordings() 
+	{  
+		int j=0; 
+		int locationEnd=0; 
+		int locationStart=0;
+		int counter=0;
+		for (int i=0;i<I.length;i++) 
+		{ 
+			if (I[i]>99) 								//if above threshold...
+			{ 
+				j++;
+				if (j>2&&locationStart==0)			//if second in a row above threshold, 
+				{
+					locationStart=i-1;				//then this is where we cut first end.
+				}
+			}
+			else if (I[i]<=99)							//to make sure at least two are in a row.
+			{
+				j=0;
+			}
+			else if (I[i]<=99&&locationStart!=0&&locationEnd==0)		//if below/at threshold and first end has been set already,
+			{
+				locationEnd=i;										//set ending of our snippet.
+				for (int i2=locationStart; i2<=locationEnd; i2++)			//make snippet.
+				{
+					double[] ICut= new double[I.length-locationStart-locationEnd];
+					double[] QCut= new double[I.length-locationStart-locationEnd];
+					ICut[counter]=I[i2];
+					QCut[counter]=Q[i2];
+					counter++;
+				}
+			}
+		}
 	}
 
-	public Chart2D graphFiltered()
-	{
-		// Create a chart:  
-		Chart2D chart = new Chart2D();
-
-		// Create an ITrace: 
-		ITrace2D trace = new Trace2DSimple(); 
-		trace.setName("");
-
-		// Add the trace to the chart. This has to be done before adding points (deadlock prevention): 
-		chart.addTrace(trace);    
-
-		// Add all points, as it is static: 
-		for (int i = 0; i < n; i++)					// Filtered version
-			trace.addPoint(fr[i], absZf[i]);
-
-		// Make it visible: Create a frame.
-		JFrame frame = new JFrame("MinimalStaticChart");
-
-		// add the chart to the frame: 
-		frame.getContentPane().add(chart);
-		frame.setSize(600,400);
-		frame.setTitle("Filtered Data");
-		frame.setLocation(850, 450);
-
-		frame.setVisible(true);
-
-
-		return chart;
-
-	}
+	/**
+	 * calcWeighting: Returns a complex number that calculates the weighting. Its
+	 * the time delay that aligns all the recordings towards a specific direction and
+	 * angle.
+	 * @param freq
+	 * @param distance
+	 * @param angle
+	 * @param numReceiver
+	 * @return
+	 */
 
 	public Complex calcWeighting(double freq, double distance, double angle, double numReceiver)
 	{
-		double e = 2.718281828459;			// Euler's number
+		double e = Math.E;			// Euler's number
 		double c = 299792458;				// Speed of light (m/s)
 		double pi = 3.14159265358979;		// Pi
 		this.angle = angle;
@@ -242,26 +187,30 @@ public class BeamObject {
 
 		//mine
 		double power = k*distance*Math.sin(Math.toRadians(angle)); //k* d(n) *sin(theta) 
-		
+
 		//theirs
 		//double power = k*distance*Math.sin(angle);
 		//need toRadians?
-		
+
 		//theirs (sarah can you explain to me?)
 		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
-		
+
 		//mine
 		//Complex complexPower = new Complex(0, (power)*-1);
-		
+
 		//Complex weighting =complexPower.exponential();
-		
-//		System.out.println();
-//		System.out.println(weighting);
-//		System.out.println();
+
+		//		System.out.println();
+		//		System.out.println(weighting);
+		//		System.out.println();
 
 		return weighting;
 	}
 
+	/**
+	 * Applies the filter and the weighting.
+	 * @param weighting
+	 */
 	public void filterAndWeightings(Complex weighting)
 	{	
 		// Create complex version of h
@@ -294,6 +243,15 @@ public class BeamObject {
 		//				absZf = absComplex(Zf);
 	}
 
+	/**
+	 * Takes in 5 beam objects and helps graph and plot angles. It also writes to a file
+	 * to store the previous data.
+	 * @param b1
+	 * @param b2
+	 * @param b3
+	 * @param b4
+	 * @param b5
+	 */
 	public void addWeightings(Complex[] b1, Complex[] b2, Complex[] b3, Complex[] b4, Complex[] b5)
 	{
 		Complex[] addedWeightings = new Complex[zTimesWeightings.length];
@@ -330,6 +288,11 @@ public class BeamObject {
 
 	}
 
+	/**
+	 * Uses print writer and fileOutputStream to write angle data to file
+	 * @param plotPoints
+	 * @param fileName
+	 */
 	private static void writePlotPointsToFile(ArrayList<AngleVsPower> plotPoints, String fileName)
 	{
 		// Create connection to fileName for printing
@@ -339,10 +302,10 @@ public class BeamObject {
 		try
 		{
 			f = new File(fileName);
-			
+
 			fos = new FileOutputStream(f, true);
 			pw = new PrintWriter(fos);
-			
+
 
 			// Write points contents out to file
 			for (AngleVsPower pp : plotPoints)
@@ -352,9 +315,9 @@ public class BeamObject {
 				pw.println("");
 				
 				System.out.println();
-				System.out.println(pp.getSignalAngle() + ", " + pp.getSignalPower());
+				System.out.println("Created point: (" + pp.getSignalAngle() + ", " + pp.getSignalPower() + ")");
 			}
-			
+
 			System.out.println("Successfully Written");
 
 		}
@@ -377,8 +340,13 @@ public class BeamObject {
 			catch(Exception e) { System.out.println("ERROR: " + e.getMessage());}
 		}
 	}
-	
-	
+
+
+	/**
+	 * Reads in the plot data from the file where the angle data is stored.
+	 * @param fileName
+	 * @return
+	 */
 	private ArrayList<AngleVsPower> readPlotPointsFromFile(String fileName)
 	{
 		// Create connection to fileName for reading
@@ -387,7 +355,7 @@ public class BeamObject {
 		signalAngle = new ArrayList<>();
 		signalPower = new ArrayList<>();
 		ArrayList<AngleVsPower> plotPoints = new ArrayList<AngleVsPower>();
-		
+
 
 		try
 		{
@@ -407,7 +375,7 @@ public class BeamObject {
 				//AngleVsPower pp = new AngleVsPower();
 				pp.setSignalAngle(Double.parseDouble(lineScan.next().trim()));
 				signalAngle.add(pp.getSignalAngle());
-//				System.out.println(pp.getSignalAngle());
+				//				System.out.println(pp.getSignalAngle());
 				pp.setSignalPower(Double.parseDouble(lineScan.next().trim()));
 				signalPower.add(pp.getSignalPower());
 				plotPoints.add(pp);
@@ -438,10 +406,14 @@ public class BeamObject {
 	}
 
 
+	/**
+	 * Used to graph the results when the graph button is pressed
+	 * @return
+	 */
 	public Chart2D finalGraph()
 	{
 		ArrayList<AngleVsPower> plotPointsFromFile = readPlotPointsFromFile("PlotPoints.txt");
-		
+
 		// Create a chart:  
 		Chart2D chart = new Chart2D();
 
@@ -473,6 +445,9 @@ public class BeamObject {
 		return chart;
 	}
 
+	/**
+	 * Applies the h filter
+	 */
 	public void filter()
 	{
 		// Create complex version of h
@@ -501,6 +476,9 @@ public class BeamObject {
 	}
 
 
+	/**
+	 * Performs an FFT on data, requires n to be a power of 2
+	 */
 	public void fourierTransform()
 	{
 		//Fourier Transform
@@ -525,6 +503,9 @@ public class BeamObject {
 		absfE = absComplex(fE);
 	}
 
+	/**
+	 * Makes the complex array representation of the IQ data
+	 */
 	public void makeE()
 	{
 
@@ -570,11 +551,7 @@ public class BeamObject {
 	 * @return
 	 */
 	public static double[] linspace(double min, double max, int points) 
-	{  
-		double batasBawah = min;
-		double batasAtas = max;
-		double jumlahData = points;
-
+	{ 
 		double a = (max - min)/ points,
 				A[] = new double[(int) points];
 		double temp = 0;
@@ -609,6 +586,12 @@ public class BeamObject {
 
 		try
 		{
+			//This should only happen if we are loading things within the project
+			//Ignore this I am still working on getting it to work
+			//URL resourceUrl = getClass().getResource("/");
+			//File file = new File((resourceUrl.toURI().getSchemeSpecificPart() + filePath));
+			//System.out.println(file.toString());
+			
 			// Open the wav file specified as the first argument
 			WavFile wavFile = WavFile.openWavFile(new File(filePath));
 
@@ -670,10 +653,17 @@ public class BeamObject {
 	public void setH(double[] array) {h = Arrays.copyOf(array, array.length);}
 	public void setFilePath(String filePath) {this.filePath = filePath;}
 	public void setFrequency(double frequency) {this.frequency = frequency;}
-	public void setN(double n) {p = Math.floor(Math.log(n) / Math.log(2));
-	this.n = Math.pow(2, p);
-	//doesn't work i think
-	System.out.println("Used 'n' from data.");}
+	
+	//Need to make sure n is less than h.length and is a power of 2.
+	public void setN(double n) 
+	{
+		if(n < 32){
+			n = 32;
+		}
+		p = Math.floor(Math.log(n) / Math.log(2));
+		this.n = Math.pow(2, p);
+	}
+	
 	public void setWeighting(Complex weighting2) {this.weighting = weighting2;}
 	public void setAngle(double angle) {this.angle = angle;}
 

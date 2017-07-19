@@ -1,42 +1,22 @@
 package beam.common;
 
-import java.awt.BorderLayout;
-import java.awt.Dimension;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-import java.awt.GridLayout;
-import java.awt.Toolkit;
-
 import javax.swing.GroupLayout;
 import javax.swing.GroupLayout.Alignment;
-import javax.swing.border.BevelBorder;
-import javax.swing.border.TitledBorder;
-
-import info.monitorenter.gui.chart.Chart2D;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 
-import java.awt.FlowLayout;
 import javax.swing.LayoutStyle.ComponentPlacement;
-import javax.swing.border.MatteBorder;
-import java.awt.Color;
-import javax.swing.border.CompoundBorder;
-import javax.swing.border.EtchedBorder;
 import javax.swing.JLabel;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
-import javax.swing.JTextPane;
-import javax.swing.JScrollPane;
-import javax.swing.JSpinner;
-import javax.swing.JList;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
 import java.awt.Font;
 
 public class FinalInterface extends JFrame {
@@ -111,8 +91,7 @@ public class FinalInterface extends JFrame {
 
 		});
 		
-		tfFilePath1 = new JTextField();
-		tfFilePath1.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile1.wav");
+		tfFilePath1 = new JTextField("/beam/resources/outputfile1.wav");
 		tfFilePath1.setColumns(10);
 		
 		lblFrequency = new JLabel("Frequency:");
@@ -148,8 +127,7 @@ public class FinalInterface extends JFrame {
 			}
 		});
 		
-		tfFilePath2 = new JTextField();
-		tfFilePath2.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile2.wav");
+		tfFilePath2 = new JTextField("/beam/resources/outputfile2.wav");
 		tfFilePath2.setColumns(10);
 		
 		JButton btnSelectFile3 = new JButton("Select File 3");
@@ -169,12 +147,10 @@ public class FinalInterface extends JFrame {
 			}
 		});
 		
-		tfFilePath3 = new JTextField();
-		tfFilePath3.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile1.wav");
+		tfFilePath3 = new JTextField("/beam/resources/outputfile3.wav");
 		tfFilePath3.setColumns(10);
 		
-		tfFilePath4 = new JTextField();
-		tfFilePath4.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile1.wav");
+		tfFilePath4 = new JTextField("/beam/resources/outputfile4.wav");
 		tfFilePath4.setColumns(10);
 		
 		JButton btnSelectFile4 = new JButton("Select File 4");
@@ -211,8 +187,7 @@ public class FinalInterface extends JFrame {
 			}
 		});
 		
-		tfFilePath5 = new JTextField();
-		tfFilePath5.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile2.wav");
+		tfFilePath5 = new JTextField("/beam/resources/outputfile1.wav");
 		tfFilePath5.setColumns(10);
 		
 		JLabel lblDistance = new JLabel("Distance:");
@@ -396,6 +371,7 @@ public class FinalInterface extends JFrame {
 				
 				//BeamObject b1 = new BeamObject();
 				b1.setFilePath(tfFilePath1.getText());
+				System.out.println(b1.getFilePath());
 				b1.setFrequency(Double.parseDouble(tfFreq.getText()));
 				b1.setN(Integer.parseInt(tfN.getText()));
 				b1.setWeighting(b1.calcWeighting(Double.parseDouble(tfFreq.getText()), Double.parseDouble(tfDistance.getText()), Double.parseDouble(tfAngle.getText()), 0));

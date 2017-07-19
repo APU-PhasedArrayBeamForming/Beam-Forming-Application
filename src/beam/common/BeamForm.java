@@ -19,5 +19,7 @@ public class BeamForm {
 		BeamObject[] array = new BeamObject[8];
 //		array[0] = b;
 //		Chart2D graph = b.graph(b.fr, b.absZf, b.absZf.length);
+		System.out.println(Math.floor(Math.log(123123) / Math.log(2)));
+		System.out.println(Math.pow(2, Math.floor(Math.log(123123) / Math.log(2))));
 	}
 }
