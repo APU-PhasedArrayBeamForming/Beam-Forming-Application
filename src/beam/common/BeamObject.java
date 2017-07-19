@@ -246,8 +246,6 @@ public class BeamObject {
 		//theirs
 		//double power = k*distance*Math.sin(angle);
 		//need toRadians?
-		
-		//theirs (sarah can you explain to me?)
 		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
 		
 		//mine
