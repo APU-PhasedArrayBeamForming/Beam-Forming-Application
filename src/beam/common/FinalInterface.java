@@ -112,13 +112,13 @@ public class FinalInterface extends JFrame {
 		});
 		
 		tfFilePath1 = new JTextField();
-		tfFilePath1.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile1.wav");
+		tfFilePath1.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile2.wav");
 		tfFilePath1.setColumns(10);
 		
 		lblFrequency = new JLabel("Frequency:");
 		
 		tfFreq = new JTextField();
-		tfFreq.setText("104.3");
+		tfFreq.setText("1090");
 		tfFreq.setColumns(10);
 		
 		lblNumberOfIterations = new JLabel("Number of Iterations:");
@@ -149,7 +149,7 @@ public class FinalInterface extends JFrame {
 		});
 		
 		tfFilePath2 = new JTextField();
-		tfFilePath2.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile2.wav");
+		tfFilePath2.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile4.wav");
 		tfFilePath2.setColumns(10);
 		
 		JButton btnSelectFile3 = new JButton("Select File 3");
@@ -170,7 +170,7 @@ public class FinalInterface extends JFrame {
 		});
 		
 		tfFilePath3 = new JTextField();
-		tfFilePath3.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile1.wav");
+		tfFilePath3.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile3.wav");
 		tfFilePath3.setColumns(10);
 		
 		tfFilePath4 = new JTextField();
@@ -212,13 +212,13 @@ public class FinalInterface extends JFrame {
 		});
 		
 		tfFilePath5 = new JTextField();
-		tfFilePath5.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile2.wav");
+		tfFilePath5.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile5.wav");
 		tfFilePath5.setColumns(10);
 		
 		JLabel lblDistance = new JLabel("Distance:");
 		
 		tfDistance = new JTextField();
-		tfDistance.setText("5.4");
+		tfDistance.setText("5");
 		tfDistance.setColumns(10);
 		
 		lblAngle = new JLabel("Angle:");
@@ -227,7 +227,7 @@ public class FinalInterface extends JFrame {
 		lblInches.setFont(new Font("Hiragino Sans GB", Font.PLAIN, 10));
 		
 		tfAngle = new JTextField();
-		tfAngle.setText("30");
+		tfAngle.setText("10");
 		tfAngle.setColumns(10);
 		
 		lblDegrees = new JLabel("degrees");
@@ -480,7 +480,7 @@ double increment = Double.parseDouble(tfAngle.getText());
 					b5 = new BeamObject(b5.getFilePath(), b5.getFrequency(), b5.getN(), b5.getWeighting());	
 					
 					
-					
+					//2 4 3 1 5 order of recordings
 					b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
 							b5.zTimesWeightings);
 				}
