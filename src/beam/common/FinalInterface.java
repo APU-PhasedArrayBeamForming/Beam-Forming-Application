@@ -269,20 +269,169 @@ public class FinalInterface extends JFrame {
 
 		});
 		
+		JButton btnNextOrder = new JButton("Next Order");
+		
+		btnNextOrder.addActionListener(new ActionListener() 
+		{
+			int num1=1;
+		  public void actionPerformed(ActionEvent e) 
+			{
+			  	String number1= Integer.toString(num1);
+				while (!(tfFilePath1.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
+				{
+					System.out.println(num1);
+					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
+				
+				num1++;
+				if (num1==6)
+					num1=1;
+				number1=Integer.toString(num1);
+				}
+				
+				if (tfFilePath1.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")) 
+				{
+				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+					int num2=num1;
+					if (num2==5)
+					{
+						num2=1;
+					}
+					else
+						num2++;
+					String number2= Integer.toString(num2);
+					tfFilePath1.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number2+".wav");
+				}
+				//second one
+				num1=1;
+				
+				number1= Integer.toString(num1);
+				while (!(tfFilePath2.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
+				{
+					System.out.println(num1);
+					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
+				
+				num1++;
+				if (num1==6)
+					num1=1;
+				number1=Integer.toString(num1);
+				}
+				
+				if (tfFilePath2.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")) 
+				{
+				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+					int num2=num1;
+					if (num2==5)
+					{
+						num2=1;
+					}
+					else
+						num2++;
+					String number2= Integer.toString(num2);
+					tfFilePath2.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number2+".wav");
+				}
+				//third one
+				num1=1;
+				
+				number1= Integer.toString(num1);
+				while (!(tfFilePath3.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
+				{
+					System.out.println(num1);
+					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
+				
+				num1++;
+				if (num1==6)
+					num1=1;
+				number1=Integer.toString(num1);
+				}
+				
+				if (tfFilePath3.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")) 
+				{
+				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+					int num2=num1;
+					if (num2==5)
+					{
+						num2=1;
+					}
+					else
+						num2++;
+					String number2= Integer.toString(num2);
+					tfFilePath3.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number2+".wav");
+				}
+				//fourth one
+				num1=1;
+				
+				number1= Integer.toString(num1);
+				while (!(tfFilePath4.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
+				{
+					System.out.println(num1);
+					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
+				
+				num1++;
+				if (num1==6)
+					num1=1;
+				number1=Integer.toString(num1);
+				}
+				
+				if (tfFilePath4.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")) 
+				{
+				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+					int num2=num1;
+					if (num2==5)
+					{
+						num2=1;
+					}
+					else
+						num2++;
+					String number2= Integer.toString(num2);
+					tfFilePath4.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number2+".wav");
+				}
+				//fifth one
+				num1=1;
+				
+				number1= Integer.toString(num1);
+				while (!(tfFilePath5.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
+				{
+					System.out.println(num1);
+					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
+				
+				num1++;
+				if (num1==6)
+					num1=1;
+				number1=Integer.toString(num1);
+				}
+				
+				if (tfFilePath5.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")) 
+				{
+				    //System.out.println("Selected file: " + selectedFile.getAbsolutePath());
+					int num2=num1;
+					if (num2==5)
+					{
+						num2=1;
+					}
+					else
+						num2++;
+					String number2= Integer.toString(num2);
+					tfFilePath5.setText("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number2+".wav");
+				}
+				
+			}
+
+		});
+		
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
 			gl_contentPane.createParallelGroup(Alignment.TRAILING)
 				.addGroup(gl_contentPane.createSequentialGroup()
 					.addContainerGap()
-					.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
-						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
-							.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addGroup(gl_contentPane.createSequentialGroup()
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(btnSelectFile1)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(tfFilePath1, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
-								.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(btnSelectFile2)
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addComponent(tfFilePath2, 406, 406, 406))
@@ -312,7 +461,7 @@ public class FinalInterface extends JFrame {
 										.addComponent(lblDegrees)
 										.addComponent(lblInches))))
 							.addGap(39))
-						.addGroup(Alignment.LEADING, gl_contentPane.createSequentialGroup()
+						.addGroup(gl_contentPane.createSequentialGroup()
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(lblNumberOfIterations)
@@ -327,7 +476,9 @@ public class FinalInterface extends JFrame {
 							.addContainerGap(335, Short.MAX_VALUE))
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnFolder, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-							.addGap(397)
+							.addGap(113)
+							.addComponent(btnNextOrder)
+							.addGap(187)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(btnGraph, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
 								.addComponent(btnRun, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
@@ -376,7 +527,8 @@ public class FinalInterface extends JFrame {
 							.addGap(18)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.BASELINE)
 								.addComponent(btnRun)
-								.addComponent(btnFolder))))
+								.addComponent(btnFolder)
+								.addComponent(btnNextOrder))))
 					.addPreferredGap(ComponentPlacement.RELATED)
 					.addComponent(btnGraph)
 					.addGap(321))
