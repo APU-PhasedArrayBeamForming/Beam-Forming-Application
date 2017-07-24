@@ -273,9 +273,15 @@ public class FinalInterface extends JFrame {
 		
 		btnNextOrder.addActionListener(new ActionListener() 
 		{
+			int pressTimes=0;
 			int num1=1;
 		  public void actionPerformed(ActionEvent e) 
 			{
+//			  pressTimes++;
+//			  if (pressTimes==4)
+//			  {
+//				  //change order of devices to 45213
+//			  }
 			  	String number1= Integer.toString(num1);
 				while (!(tfFilePath1.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
