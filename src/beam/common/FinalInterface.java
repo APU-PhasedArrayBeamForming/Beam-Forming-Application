@@ -275,13 +275,38 @@ public class FinalInterface extends JFrame {
 		{
 			int pressTimes=0;
 			int num1=1;
+			String firstRec = "";
 		  public void actionPerformed(ActionEvent e) 
 			{
-//			  pressTimes++;
-//			  if (pressTimes==4)
-//			  {
-//				  //change order of devices to 45213
-//			  }
+			  pressTimes++;
+			  if (pressTimes==5)
+			  {
+				  //swap position of first and second device
+				  firstRec= tfFilePath1.getText();
+				  tfFilePath1.setText(tfFilePath2.getText());
+				  tfFilePath2.setText(firstRec);
+			  }
+			  if (pressTimes==11)
+			  {
+				  //swap position of second and third device
+				  firstRec= tfFilePath2.getText();
+				  tfFilePath2.setText(tfFilePath3.getText());
+				  tfFilePath3.setText(firstRec);
+			  }
+			  if (pressTimes==17)
+			  {
+				  //swap position of third and fourth device
+				  firstRec= tfFilePath3.getText();
+				  tfFilePath3.setText(tfFilePath4.getText());
+				  tfFilePath4.setText(firstRec);
+			  }
+			  if (pressTimes==23)
+			  {
+				  //swap position of fourth and fifth device
+				  firstRec= tfFilePath4.getText();
+				  tfFilePath4.setText(tfFilePath5.getText());
+				  tfFilePath5.setText(firstRec);
+			  }
 			  	String number1= Integer.toString(num1);
 				while (!(tfFilePath1.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
