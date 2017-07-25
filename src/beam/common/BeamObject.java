@@ -45,6 +45,8 @@ public class BeamObject {
 	public Complex fE[];
 	public double fr[];
 	public double absfE[];
+	public static double max2 = -100000;
+	public static double maxIdx=-1;
 
 	double[] h  = new double[] {-0.0007433, 0.0008555, 0.0029073, 0.005288, 0.0061011,
 			0.0031605, -0.0046278, -0.0157893, -0.0256264, -0.0271283, -0.013497,
@@ -321,13 +323,37 @@ public class BeamObject {
 
 		// Write plot points to file
 		String fileName = "PlotPoints.txt";
+		
 		writePlotPointsToFile(plotPoints, fileName);
-
+		
 
 		//		return absAddedWeightings;
 
 	}
+	
+	private static void findMax(ArrayList<AngleVsPower> plotPoints)
+	{
+		double max3=-1;
+		if (max2>6&&max2<8)
+			max3=max2;
+		// Write points contents out to file
+		for (AngleVsPower pp : plotPoints)
+		{
+			if (pp.getSignalPower() > max2)
+			{
+				max2 = pp.getSignalPower();
+				maxIdx=pp.getSignalAngle();
+			}
+		}
+		
+		System.out.println();
+		System.out.println("Max point is:");
+		System.out.println(maxIdx + ", " + max2);
+		if (max2>max3)
+			System.out.println("Max was changed, difference is: "+(max2-max3));
 
+	}
+	
 	private static void writePlotPointsToFile(ArrayList<AngleVsPower> plotPoints, String fileName)
 	{
 		// Create connection to fileName for printing
@@ -349,11 +375,12 @@ public class BeamObject {
 				pw.write(pp.getSignalPower() + "");
 				pw.println("");
 				
-				System.out.println();
-				System.out.println(pp.getSignalAngle() + ", " + pp.getSignalPower());
+//				System.out.println();
+//				System.out.println(pp.getSignalAngle() + ", " + pp.getSignalPower());
 			}
 			
 			System.out.println("Successfully Written");
+			BeamObject.findMax(plotPoints);
 
 		}
 		catch(FileNotFoundException e)

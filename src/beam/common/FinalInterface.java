@@ -310,8 +310,6 @@ public class FinalInterface extends JFrame {
 			  	String number1= Integer.toString(num1);
 				while (!(tfFilePath1.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
-					System.out.println(num1);
-					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
 				
 				num1++;
 				if (num1==6)
@@ -338,8 +336,6 @@ public class FinalInterface extends JFrame {
 				number1= Integer.toString(num1);
 				while (!(tfFilePath2.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
-					System.out.println(num1);
-					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
 				
 				num1++;
 				if (num1==6)
@@ -366,8 +362,6 @@ public class FinalInterface extends JFrame {
 				number1= Integer.toString(num1);
 				while (!(tfFilePath3.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
-					System.out.println(num1);
-					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
 				
 				num1++;
 				if (num1==6)
@@ -394,8 +388,6 @@ public class FinalInterface extends JFrame {
 				number1= Integer.toString(num1);
 				while (!(tfFilePath4.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
-					System.out.println(num1);
-					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
 				
 				num1++;
 				if (num1==6)
@@ -422,8 +414,6 @@ public class FinalInterface extends JFrame {
 				number1= Integer.toString(num1);
 				while (!(tfFilePath5.getText().equals("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav")))
 				{
-					System.out.println(num1);
-					System.out.println("C:\\Users\\Justin\\Desktop\\WavFiles\\outputfile"+number1+".wav");
 				
 				num1++;
 				if (num1==6)
@@ -664,6 +654,7 @@ double increment = Double.parseDouble(tfAngle.getText());
 					
 					
 					//2 4 3 1 5 order of recordings
+					//5 2 4 1 3 for 90 peak.
 					b1.addWeightings(b1.zTimesWeightings, b2.zTimesWeightings, b3.zTimesWeightings, b4.zTimesWeightings, 
 							b5.zTimesWeightings);
 				}
