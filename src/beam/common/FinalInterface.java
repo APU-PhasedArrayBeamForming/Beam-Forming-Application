@@ -244,6 +244,7 @@ public class FinalInterface extends JFrame {
 			}
 		});
 		
+		
 		JButton btnFolder = new JButton("Select Folder");
 		//populates 1-5 of text areas with outputfile1.wav outputfile2.wav and so on...
 		
@@ -439,6 +440,15 @@ public class FinalInterface extends JFrame {
 
 		});
 		
+		JButton btnClearTextFile = new JButton("Clear text file");
+		btnClearTextFile.addActionListener(new ActionListener() 
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				b1.clearTextFile();
+			}
+		});
+		
 
 		GroupLayout gl_contentPane = new GroupLayout(contentPane);
 		gl_contentPane.setHorizontalGroup(
@@ -451,7 +461,7 @@ public class FinalInterface extends JFrame {
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(btnSelectFile1)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath1, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
+									.addComponent(tfFilePath1, GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(btnSelectFile2)
 									.addPreferredGap(ComponentPlacement.RELATED)
@@ -462,14 +472,14 @@ public class FinalInterface extends JFrame {
 										.addComponent(btnSelectFile4))
 									.addPreferredGap(ComponentPlacement.RELATED)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
-										.addComponent(tfFilePath4, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)
-										.addComponent(tfFilePath3, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE)))
+										.addComponent(tfFilePath4, GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)
+										.addComponent(tfFilePath3, GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE)))
 								.addGroup(gl_contentPane.createSequentialGroup()
 									.addComponent(btnSelectFile5)
 									.addPreferredGap(ComponentPlacement.RELATED)
-									.addComponent(tfFilePath5, GroupLayout.DEFAULT_SIZE, 410, Short.MAX_VALUE))
+									.addComponent(tfFilePath5, GroupLayout.DEFAULT_SIZE, 408, Short.MAX_VALUE))
 								.addGroup(gl_contentPane.createSequentialGroup()
-									.addPreferredGap(ComponentPlacement.RELATED, 350, Short.MAX_VALUE)
+									.addPreferredGap(ComponentPlacement.RELATED, 348, Short.MAX_VALUE)
 									.addGroup(gl_contentPane.createParallelGroup(Alignment.TRAILING)
 										.addComponent(lblAngle)
 										.addComponent(lblDistance))
@@ -498,8 +508,10 @@ public class FinalInterface extends JFrame {
 						.addGroup(gl_contentPane.createSequentialGroup()
 							.addComponent(btnFolder, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
 							.addGap(113)
-							.addComponent(btnNextOrder)
-							.addGap(187)
+							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+								.addComponent(btnNextOrder)
+								.addComponent(btnClearTextFile))
+							.addGap(185)
 							.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING, false)
 								.addComponent(btnGraph, Alignment.TRAILING, 0, 0, Short.MAX_VALUE)
 								.addComponent(btnRun, Alignment.TRAILING, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))))
@@ -551,7 +563,9 @@ public class FinalInterface extends JFrame {
 								.addComponent(btnFolder)
 								.addComponent(btnNextOrder))))
 					.addPreferredGap(ComponentPlacement.RELATED)
-					.addComponent(btnGraph)
+					.addGroup(gl_contentPane.createParallelGroup(Alignment.LEADING)
+						.addComponent(btnGraph)
+						.addComponent(btnClearTextFile))
 					.addGap(321))
 		);
 

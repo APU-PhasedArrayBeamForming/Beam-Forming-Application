@@ -261,6 +261,26 @@ public class BeamObject {
 
 		return weighting;
 	}
+	public void clearTextFile()
+	{
+		FileWriter fwOb = null;
+		try 
+		{
+			fwOb = new FileWriter("PlotPoints.txt", false);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+        PrintWriter pwOb = new PrintWriter(fwOb, false);
+        pwOb.flush();
+        pwOb.close();
+        try {
+			fwOb.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public void filterAndWeightings(Complex weighting)
 	{	
