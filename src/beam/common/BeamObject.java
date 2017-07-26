@@ -283,10 +283,10 @@ public class BeamObject {
 		Z = FFT.cconvolve(hComplex, E);
 
 		// Multiply by weighting
-		zTimesWeightings = new Complex[Z.length];
-		for (int i = 0; i < Z.length; i++) 
+		zTimesWeightings = new Complex[E.length];
+		for (int i = 0; i < E.length; i++) 
 		{
-			zTimesWeightings[i] = Z[i].times(weighting);
+			zTimesWeightings[i] = E[i].times(weighting);
 		}
 
 
