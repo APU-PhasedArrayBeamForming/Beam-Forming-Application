@@ -39,8 +39,7 @@ public class BeamObject {
 
 	private double I[];
 	private double Q[];
-	public double ICut[]; 
-	public double QCut[]; 
+	public Complex ECut[];
 	public Complex E[];
 	public Complex fE[];
 	public double fr[];
