@@ -1,18 +1,21 @@
 package beam.common;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
 import javax.swing.JFrame;
 
+
+import beam.resources.test;
 import info.monitorenter.gui.chart.Chart2D;
 import info.monitorenter.gui.chart.ITrace2D;
 import info.monitorenter.gui.chart.traces.Trace2DSimple;
@@ -111,12 +114,110 @@ public class BeamObject {
 		omega = 2*Math.PI*frequency;
 		dt = 1/sample;
 
-		makeE();
+		//makeE();
 		System.out.println("Changed n to: " + n);
-		fourierTransform();
-		filterAndWeightings(weighting);
+		//fourierTransform();
+		//filterAndWeightings(weighting);
 		//filter();
 		this.setWeighting(weighting);
+	}
+
+	public short twoBytesToShort(byte b1, byte b2) {
+		return (short) ((b1 << 8) | (b2 & 0xFF));
+	}	
+
+	public void callSDR(){
+		try {
+			String line;
+			InputStream stdout = null;
+			InputStream stdout2 = null;
+
+			// launch EXE and grab stdin/stdout and stderr
+			Process process = Runtime.getRuntime ().exec ("./RSPMultiConnect/play_sdr -");
+			//Process process1 = Runtime.getRuntime ().exec ("./RSPMultiConnect/play_sdr -");
+			// stdin = process.getOutputStream ();
+			// stderr = process.getErrorStream ();
+			stdout = process.getInputStream ();
+			//stdout2 = process1.getInputStream();
+
+			ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+
+			int nRead;
+			byte[] data = new byte[100];
+
+			int numberSamples = 100;
+			while ((nRead = stdout.read(data, 0, data.length)) != -1 && buffer.size() < numberSamples) {
+				buffer.write(data, 0, nRead);
+			}
+
+			buffer.flush();
+			byte[] byteArr = buffer.toByteArray();
+
+			//We can parse out the String data because we know that the serial number is 10 characters
+			//Thus being 10 bytes plus a null character so 11 bytes total. 11 * numDevices will result
+			//in the full parsed out serial number data. **After testing I think that the null character
+			//is removed when using printf because that is probably what tells printf when to stop writing
+			
+			//TODO: Verify that the data is valid IQ data and separate the channels
+			//TODO: Work on creating separate processes that can run on different threads(not sure if possible)
+			//TODO: Think of more data we would need to gather from the SDR
+
+			String s = "";
+			int numDevices = 2;
+			for(int i = 0; i < byteArr.length && i < (10*numDevices); i++){
+				s += (char)byteArr[i];
+			}
+			
+			System.out.println("Serial numbers: " + s);
+
+			System.out.println("Previous size" + byteArr.length);
+			short[] shortArr = new short[byteArr.length / 2];
+			int j = 1;
+			for(int i = 10*numDevices; i < shortArr.length; i+=2){
+				shortArr[i] = twoBytesToShort(byteArr[i], byteArr[i+1]);
+				System.out.println(shortArr[i]);
+				j+=2;
+			}
+
+			//Now need to split into two seperate arrays
+
+
+			System.out.println("Here is how many samples there are " + shortArr.length);
+
+			// "write" the parms into stdin
+			//		      line = "param1" + "\n";
+			//		      stdin.write(line.getBytes() );
+			//		      stdin.flush();
+			//
+			//		      line = "param2" + "\n";
+			//		      stdin.write(line.getBytes() );
+			//		      stdin.flush();
+			//
+			//		      line = "param3" + "\n";
+			//		      stdin.write(line.getBytes() );
+			//		      stdin.flush();
+			//
+			//		      stdin.close();
+
+			//		      // clean up if any output in stdout
+			//		      BufferedReader brCleanUp =
+			//		        new BufferedReader (new InputStreamReader (stdout));
+			//		      while ((line = brCleanUp.readLine ()) != null) {
+			//		        System.out.println ("[Stdout] " + line);
+			//		      }
+			//		      brCleanUp.close();
+
+			// clean up if any output in stderr
+			//brCleanUp =
+			//		        new BufferedReader (new InputStreamReader (stderr));
+			//		      while ((line = brCleanUp.readLine ()) != null) {
+			//		        System.out.println ("[Stderr] " + line);
+			//		      }
+			// brCleanUp.close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 
@@ -192,17 +293,12 @@ public class BeamObject {
 		//double power = k*distance*Math.sin(angle);
 		//need toRadians?
 
-		//theirs (sarah can you explain to me?)
 		Complex weighting = new Complex(Math.cos(power), (Math.sin(power)*-1));
 
 		//mine
 		//Complex complexPower = new Complex(0, (power)*-1);
 
 		//Complex weighting =complexPower.exponential();
-
-		//		System.out.println();
-		//		System.out.println(weighting);
-		//		System.out.println();
 
 		return weighting;
 	}
@@ -214,10 +310,10 @@ public class BeamObject {
 	public void filterAndWeightings(Complex weighting)
 	{	
 		// Create complex version of h
-		hComplex = new Complex[E.length];
+		hComplex = new Complex[h.length];
 
 		//Populates everything with zeroes
-		for (int i = 0; i < E.length; i++)
+		for (int i = 0; i < h.length; i++)
 		{
 			hComplex[i] = new Complex(0,0);
 		}
@@ -299,6 +395,7 @@ public class BeamObject {
 		File f = null;
 		FileOutputStream fos = null;
 		PrintWriter pw = null;
+
 		try
 		{
 			f = new File(fileName);
@@ -306,14 +403,13 @@ public class BeamObject {
 			fos = new FileOutputStream(f, true);
 			pw = new PrintWriter(fos);
 
-
 			// Write points contents out to file
 			for (AngleVsPower pp : plotPoints)
 			{
 				pw.write(pp.getSignalAngle() + ", ");
 				pw.write(pp.getSignalPower() + "");
 				pw.println("");
-				
+
 				System.out.println();
 				System.out.println("Created point: (" + pp.getSignalAngle() + ", " + pp.getSignalPower() + ")");
 			}
@@ -359,6 +455,7 @@ public class BeamObject {
 
 		try
 		{
+
 			fis = new FileInputStream(fileName);
 			fScan = new Scanner(fis);
 
@@ -375,22 +472,17 @@ public class BeamObject {
 				//AngleVsPower pp = new AngleVsPower();
 				pp.setSignalAngle(Double.parseDouble(lineScan.next().trim()));
 				signalAngle.add(pp.getSignalAngle());
-				//				System.out.println(pp.getSignalAngle());
+				//System.out.println(pp.getSignalAngle());
 				pp.setSignalPower(Double.parseDouble(lineScan.next().trim()));
 				signalPower.add(pp.getSignalPower());
 				plotPoints.add(pp);
 				// Debugging
 				System.out.println(pp.toString());
-
 			}
 		}
-		catch(FileNotFoundException e)
-		{
-			System.out.println("ERROR (File not found): " + e.getMessage());
-		}
-		catch(IOException e)
-		{
-			System.out.println("ERROR (File not found): " + e.getMessage());
+		catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		finally
 		{
@@ -586,14 +678,19 @@ public class BeamObject {
 
 		try
 		{
-			//This should only happen if we are loading things within the project
-			//Ignore this I am still working on getting it to work
-			//URL resourceUrl = getClass().getResource("/");
-			//File file = new File((resourceUrl.toURI().getSchemeSpecificPart() + filePath));
-			//System.out.println(file.toString());
-			
-			// Open the wav file specified as the first argument
-			WavFile wavFile = WavFile.openWavFile(new File(filePath));
+			WavFile wavFile;
+			//Checks if the filePath is a project relative path or user chosen
+			if(!filePath.contains("/")){
+				System.out.println(test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath());
+
+				File file = new File(test.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath() + "/beam/resources/" + filePath);
+				//System.out.println(resourceUrl.toURI().getSchemeSpecificPart());
+				wavFile = WavFile.openWavFile(file);
+			}
+			else{
+				// Open the wav file specified as the first argument
+				wavFile = WavFile.openWavFile(new File(filePath));
+			}
 
 			// Display information about the wav file
 			wavFile.display();
@@ -653,7 +750,7 @@ public class BeamObject {
 	public void setH(double[] array) {h = Arrays.copyOf(array, array.length);}
 	public void setFilePath(String filePath) {this.filePath = filePath;}
 	public void setFrequency(double frequency) {this.frequency = frequency;}
-	
+
 	//Need to make sure n is less than h.length and is a power of 2.
 	public void setN(double n) 
 	{
@@ -663,7 +760,7 @@ public class BeamObject {
 		p = Math.floor(Math.log(n) / Math.log(2));
 		this.n = Math.pow(2, p);
 	}
-	
+
 	public void setWeighting(Complex weighting2) {this.weighting = weighting2;}
 	public void setAngle(double angle) {this.angle = angle;}
 

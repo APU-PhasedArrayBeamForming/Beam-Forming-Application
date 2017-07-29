@@ -15,11 +15,7 @@ public class BeamForm {
 	public static String filePath = "/Users/barthinator/Desktop/Fc100KHz_2MSPS_1KHzModulation_June12_2017.wav";
 	
 	public static void main(String args[]){
-//		BeamObject b = new BeamObject(filePath, 1,030,000,000, 262144, 2*Math.pow(10, 6), 0);
-		BeamObject[] array = new BeamObject[8];
-//		array[0] = b;
-//		Chart2D graph = b.graph(b.fr, b.absZf, b.absZf.length);
-		System.out.println(Math.floor(Math.log(123123) / Math.log(2)));
-		System.out.println(Math.pow(2, Math.floor(Math.log(123123) / Math.log(2))));
+		BeamObject b = new BeamObject(filePath, 103030, 103000, new Complex(0,0));
+		b.callSDR();
 	}
 }
