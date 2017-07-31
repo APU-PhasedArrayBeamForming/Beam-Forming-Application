@@ -37,9 +37,10 @@ public class BeamObject {
 	public double p;
 	public double dt;
 
-	private double I[];
-	private double Q[];
-	public Complex ECut[];
+	public double I[];
+	public double Q[];
+	public double ICut[];
+	public double QCut[];
 	public Complex E[];
 	public Complex fE[];
 	public double fr[];
@@ -110,7 +111,8 @@ public class BeamObject {
 		this.frequency = frequency*1000000; 		// Convert Frequency into kHz
 		omega = 2*Math.PI*frequency;
 		dt = 1/sample;
-
+		
+		alignRecordings();
 		makeE();
 		System.out.println(n);
 		fourierTransform();
@@ -129,40 +131,43 @@ public class BeamObject {
 	//method to chop of ends of recordings to match each other. 
 	  //need to know pattern (i check that there is 2 pts in a row above threshold, and cut from first above threshold). (99 for example)
 	
-	  public void alignRecordings() 
-	  {  
-	    int j=0; 
-	    int locationEnd=0; 
-	    int locationStart=0;
-	    int counter=0;
-	    for (int i=0;i<I.length;i++) 
-	    { 
-	      if (I[i]>99) 								//if above threshold...
-	      { 
-	    	  j++;
-	    	  if (j>2&&locationStart==0)			//if second in a row above threshold, 
-	    	  {
-	    		  locationStart=i-1;				//then this is where we cut first end.
-	    	  }
-	      }
-	      else if (I[i]<=99)							//to make sure at least two are in a row.
-	      {
-	    	  j=0;
-	      }
-	      else if (I[i]<=99&&locationStart!=0&&locationEnd==0)		//if below/at threshold and first end has been set already,
-	      {
-	    	  locationEnd=i;										//set ending of our snippet.
-	    	  for (int i2=locationStart; i2<=locationEnd; i2++)			//make snippet.
-	    	  {
-	    		  double[] ICut= new double[I.length-locationStart-locationEnd];
-	    		  double[] QCut= new double[I.length-locationStart-locationEnd];
-	    		  ICut[counter]=I[i2];
-		          QCut[counter]=Q[i2];
-		          counter++;
-	    	  }
-	      }
-	    }
-	  } 
+	public void alignRecordings() 
+	{  
+		 //I
+		int thresholdIdx=0;
+		for (int i=0;i<I.length;i++)
+		{
+			if ((I[i]>-5000)&&(thresholdIdx==0))
+			{
+				thresholdIdx=i;
+			}
+		}
+		int j=0;
+		ICut=new double[64];
+		for (int i=thresholdIdx;i<(thresholdIdx+64);i++)
+		{
+			ICut[j]=I[i];
+			j++;
+		}
+		
+		//Q
+		
+		thresholdIdx=0;
+		for (int i=0;i<Q.length;i++)
+		{
+			if ((I[i]>-5000)&&(thresholdIdx==0))
+			{
+				thresholdIdx=i;
+			}
+		}
+		j=0;
+		QCut=new double[64];
+		for (int i=thresholdIdx;i<(thresholdIdx+64);i++)
+		{
+			QCut[j]=I[i];
+			j++;
+		}
+	 } 
 	
 	public Chart2D graphUnfiltered()
 	{
@@ -582,11 +587,11 @@ public class BeamObject {
 
 		double[] t = linspace(0, (getDt()*(getN()-1)), (int)getN());
 
-		E = new Complex[Q.length];
+		E = new Complex[QCut.length];
 
 		//E = I + %i*Q
 		for(int i = 0; i < E.length; i++){
-			E[i] = new Complex(I[i], Q[i]);
+			E[i] = new Complex(ICut[i], ICut[i]);
 		}
 	}
 
